@@ -108,6 +108,11 @@
     @apply bg-background text-foreground;
   }
 
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
   /* Enhanced contrast utilities for WCAG AA compliance */
   .text-high-contrast {
     color: #1a1a1a;
@@ -141,5 +146,18 @@
   input[type="reset"] {
     min-height: 44px;
     min-width: 44px;
+  }
+}
+@layer components {
+  .fancy-input {
+    @apply border-none outline-none rounded-[15px] p-4 transition ease-in-out duration-300 w-full;
+    background-color: #ccc;
+    box-shadow: inset 2px 5px 10px rgba(0, 0, 0, 0.3);
+  }
+
+  .fancy-input:focus {
+    background-color: white;
+    transform: scale(1.05);
+    box-shadow: 13px 13px 100px #969696, -13px -13px 100px #ffffff;
   }
 }
