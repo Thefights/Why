@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<Nullable>enable</Nullable>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<RootNamespace>chaolong_sever</RootNamespace>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<EditorConfigFiles Remove="D:\PetProject\chaolongcotham_ecommerce\chaolong-sever\.editorconfig" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<None Include="D:\PetProject\chaolongcotham_ecommerce\chaolong-sever\.editorconfig" />
+	</ItemGroup>
+
+</Project>
