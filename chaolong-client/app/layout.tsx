@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { GeistMono } from "geist/font/mono";
 import { Montserrat, Open_Sans } from "next/font/google";
 import "./globals.css";
+import { AuthProvider } from "@/contexts/auth-context";
 
 const montserrat = Montserrat({
   subsets: ["latin"],
@@ -45,7 +46,7 @@ html {
       <body
         className={`${montserrat.variable} ${openSans.variable} antialiased`}
       >
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

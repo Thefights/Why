@@ -11,9 +11,11 @@ import { Navigation } from "@/components/navigation";
 import ValidateField from "@/components/validate/validate-field";
 import useValidation from "@/components/hooks/use-validation";
 import { useFormValidity } from "@/components/hooks/use-form-validity";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function LoginPage() {
   const { validateExist } = useValidation();
+  const { login } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -44,11 +46,14 @@ export default function LoginPage() {
 
     setIsLoading(true);
 
-    // Simulate login process
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      await login(email, password);
       router.push("/");
-    }, 1500);
+    } catch (error) {
+      console.error("Login failed:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleGoogleSignIn = () => {
