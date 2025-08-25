@@ -1,13 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,23 +40,29 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Edit, Trash2 } from "lucide-react"
-import { toast } from "@/hooks/use-toast"
+} from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Plus, Edit, Trash2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
 
 interface AdminVoucher {
-  id: string
-  name: string
-  code: string
-  description: string
-  discountAmount: number
-  discountType: "percentage" | "fixed"
-  quantity: number
-  usedCount: number
-  expirationDate: string
-  isActive: boolean
-  category: "food" | "drink" | "combo" | "general"
+  id: string;
+  name: string;
+  code: string;
+  description: string;
+  discountAmount: number;
+  discountType: "percentage" | "fixed";
+  quantity: number;
+  usedCount: number;
+  expirationDate: string;
+  isActive: boolean;
+  category: "food" | "drink" | "combo" | "general";
 }
 
 const mockVouchers: AdminVoucher[] = [
@@ -86,40 +105,42 @@ const mockVouchers: AdminVoucher[] = [
     isActive: false,
     category: "combo",
   },
-]
+];
 
 export default function AdminVouchersPage() {
-  const [vouchers, setVouchers] = useState<AdminVoucher[]>(mockVouchers)
-  const [isCreateOpen, setIsCreateOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
-  const [selectedVoucher, setSelectedVoucher] = useState<AdminVoucher | null>(null)
-  const [formData, setFormData] = useState<Partial<AdminVoucher>>({})
+  const [vouchers, setVouchers] = useState<AdminVoucher[]>(mockVouchers);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedVoucher, setSelectedVoucher] = useState<AdminVoucher | null>(
+    null
+  );
+  const [formData, setFormData] = useState<Partial<AdminVoucher>>({});
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString("vi-VN")
-  }
+    return new Date(dateString).toLocaleDateString("vi-VN");
+  };
 
   const getCategoryColor = (category: AdminVoucher["category"]) => {
     switch (category) {
       case "food":
-        return "bg-orange-100 text-orange-800 border-orange-200"
+        return "bg-orange-100 text-orange-800 border-orange-200";
       case "drink":
-        return "bg-blue-100 text-blue-800 border-blue-200"
+        return "bg-blue-100 text-blue-800 border-blue-200";
       case "combo":
-        return "bg-purple-100 text-purple-800 border-purple-200"
+        return "bg-purple-100 text-purple-800 border-purple-200";
       case "general":
-        return "bg-green-100 text-green-800 border-green-200"
+        return "bg-green-100 text-green-800 border-green-200";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
-  }
+  };
 
   const handleCreate = () => {
     const newVoucher: AdminVoucher = {
@@ -134,50 +155,58 @@ export default function AdminVouchersPage() {
       expirationDate: formData.expirationDate || "",
       isActive: formData.isActive ?? true,
       category: formData.category || "general",
-    }
-    setVouchers([...vouchers, newVoucher])
-    setIsCreateOpen(false)
-    setFormData({})
+    };
+    setVouchers([...vouchers, newVoucher]);
+    setIsCreateOpen(false);
+    setFormData({});
     toast({
       title: "Voucher Created",
       description: `${newVoucher.name} has been successfully created.`,
-    })
-  }
+    });
+  };
 
   const handleEdit = () => {
-    if (!selectedVoucher) return
+    if (!selectedVoucher) return;
     setVouchers(
-      vouchers.map((voucher) => (voucher.id === selectedVoucher.id ? { ...selectedVoucher, ...formData } : voucher)),
-    )
-    setIsEditOpen(false)
-    setSelectedVoucher(null)
-    setFormData({})
+      vouchers.map((voucher) =>
+        voucher.id === selectedVoucher.id
+          ? { ...selectedVoucher, ...formData }
+          : voucher
+      )
+    );
+    setIsEditOpen(false);
+    setSelectedVoucher(null);
+    setFormData({});
     toast({
       title: "Voucher Updated",
       description: "Voucher has been successfully updated.",
-    })
-  }
+    });
+  };
 
   const handleDelete = (voucherId: string) => {
-    setVouchers(vouchers.filter((voucher) => voucher.id !== voucherId))
+    setVouchers(vouchers.filter((voucher) => voucher.id !== voucherId));
     toast({
       title: "Voucher Deleted",
       description: "Voucher has been successfully deleted.",
-    })
-  }
+    });
+  };
 
   const openEditDialog = (voucher: AdminVoucher) => {
-    setSelectedVoucher(voucher)
-    setFormData(voucher)
-    setIsEditOpen(true)
-  }
+    setSelectedVoucher(voucher);
+    setFormData(voucher);
+    setIsEditOpen(true);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-serif font-bold tracking-tight">Vouchers Management</h2>
-          <p className="text-muted-foreground font-sans">Manage promotional vouchers and discounts</p>
+          <h2 className="text-3xl font-serif font-bold tracking-tight">
+            Vouchers Management
+          </h2>
+          <p className="text-muted-foreground font-sans">
+            Manage promotional vouchers and discounts
+          </p>
         </div>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
@@ -188,8 +217,12 @@ export default function AdminVouchersPage() {
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle className="font-serif">Create New Voucher</DialogTitle>
-              <DialogDescription className="font-sans">Add a new promotional voucher</DialogDescription>
+              <DialogTitle className="font-serif">
+                Create New Voucher
+              </DialogTitle>
+              <DialogDescription className="font-sans">
+                Add a new promotional voucher
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>
@@ -199,7 +232,9 @@ export default function AdminVouchersPage() {
                 <Input
                   id="name"
                   value={formData.name || ""}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className="font-sans"
                 />
               </div>
@@ -210,7 +245,12 @@ export default function AdminVouchersPage() {
                 <Input
                   id="code"
                   value={formData.code || ""}
-                  onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      code: e.target.value.toUpperCase(),
+                    })
+                  }
                   className="font-sans"
                   placeholder="DISCOUNT10"
                 />
@@ -222,7 +262,9 @@ export default function AdminVouchersPage() {
                 <Textarea
                   id="description"
                   value={formData.description || ""}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   className="font-sans"
                 />
               </div>
@@ -234,7 +276,10 @@ export default function AdminVouchersPage() {
                   <Select
                     value={formData.discountType}
                     onValueChange={(value) =>
-                      setFormData({ ...formData, discountType: value as "percentage" | "fixed" })
+                      setFormData({
+                        ...formData,
+                        discountType: value as "percentage" | "fixed",
+                      })
                     }
                   >
                     <SelectTrigger className="font-sans">
@@ -248,13 +293,20 @@ export default function AdminVouchersPage() {
                 </div>
                 <div>
                   <Label htmlFor="discountAmount" className="font-sans">
-                    {formData.discountType === "percentage" ? "Percentage (%)" : "Amount (VND)"}
+                    {formData.discountType === "percentage"
+                      ? "Percentage (%)"
+                      : "Amount (VND)"}
                   </Label>
                   <Input
                     id="discountAmount"
                     type="number"
                     value={formData.discountAmount || ""}
-                    onChange={(e) => setFormData({ ...formData, discountAmount: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        discountAmount: Number(e.target.value),
+                      })
+                    }
                     className="font-sans"
                   />
                 </div>
@@ -268,7 +320,12 @@ export default function AdminVouchersPage() {
                     id="quantity"
                     type="number"
                     value={formData.quantity || ""}
-                    onChange={(e) => setFormData({ ...formData, quantity: Number(e.target.value) })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        quantity: Number(e.target.value),
+                      })
+                    }
                     className="font-sans"
                   />
                 </div>
@@ -280,7 +337,12 @@ export default function AdminVouchersPage() {
                     id="expirationDate"
                     type="date"
                     value={formData.expirationDate || ""}
-                    onChange={(e) => setFormData({ ...formData, expirationDate: e.target.value })}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        expirationDate: e.target.value,
+                      })
+                    }
                     className="font-sans"
                   />
                 </div>
@@ -291,7 +353,12 @@ export default function AdminVouchersPage() {
                 </Label>
                 <Select
                   value={formData.category}
-                  onValueChange={(value) => setFormData({ ...formData, category: value as AdminVoucher["category"] })}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      category: value as AdminVoucher["category"],
+                    })
+                  }
                 >
                   <SelectTrigger className="font-sans">
                     <SelectValue placeholder="Select category" />
@@ -306,7 +373,11 @@ export default function AdminVouchersPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateOpen(false)} className="font-sans">
+              <Button
+                variant="outline"
+                onClick={() => setIsCreateOpen(false)}
+                className="font-sans"
+              >
                 Cancel
               </Button>
               <Button onClick={handleCreate} className="font-sans">
@@ -320,7 +391,9 @@ export default function AdminVouchersPage() {
       <Card>
         <CardHeader>
           <CardTitle className="font-serif">All Vouchers</CardTitle>
-          <CardDescription className="font-sans">{vouchers.length} vouchers created</CardDescription>
+          <CardDescription className="font-sans">
+            {vouchers.length} vouchers created
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -341,11 +414,17 @@ export default function AdminVouchersPage() {
                 {vouchers.map((voucher) => (
                   <TableRow key={voucher.id}>
                     <TableCell>
-                      <div className="font-medium font-sans">{voucher.name}</div>
-                      <div className="text-sm text-muted-foreground font-sans line-clamp-1">{voucher.description}</div>
+                      <div className="font-medium font-sans">
+                        {voucher.name}
+                      </div>
+                      <div className="text-sm text-muted-foreground font-sans line-clamp-1">
+                        {voucher.description}
+                      </div>
                     </TableCell>
                     <TableCell>
-                      <code className="bg-muted px-2 py-1 rounded text-sm font-mono">{voucher.code}</code>
+                      <code className="bg-muted px-2 py-1 rounded text-sm font-mono">
+                        {voucher.code}
+                      </code>
                     </TableCell>
                     <TableCell className="font-sans">
                       {voucher.discountType === "percentage"
@@ -356,9 +435,17 @@ export default function AdminVouchersPage() {
                       {voucher.usedCount} / {voucher.quantity}
                     </TableCell>
                     <TableCell>
-                      <Badge className={`${getCategoryColor(voucher.category)} font-sans`}>{voucher.category}</Badge>
+                      <Badge
+                        className={`${getCategoryColor(
+                          voucher.category
+                        )} font-sans`}
+                      >
+                        {voucher.category}
+                      </Badge>
                     </TableCell>
-                    <TableCell className="font-sans">{formatDate(voucher.expirationDate)}</TableCell>
+                    <TableCell className="font-sans">
+                      {formatDate(voucher.expirationDate)}
+                    </TableCell>
                     <TableCell>
                       <Badge
                         className={
@@ -392,13 +479,19 @@ export default function AdminVouchersPage() {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle className="font-serif">Delete Voucher</AlertDialogTitle>
+                              <AlertDialogTitle className="font-serif">
+                                Delete Voucher
+                              </AlertDialogTitle>
                               <AlertDialogDescription className="font-sans">
-                                Are you sure you want to delete "{voucher.name}"? This action cannot be undone.
+                                Are you sure you want to delete &quot;
+                                {voucher.name}&quot;? This action cannot be
+                                undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel className="font-sans">Cancel</AlertDialogCancel>
+                              <AlertDialogCancel className="font-sans">
+                                Cancel
+                              </AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDelete(voucher.id)}
                                 className="font-sans bg-red-600 hover:bg-red-700"
@@ -423,7 +516,9 @@ export default function AdminVouchersPage() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="font-serif">Edit Voucher</DialogTitle>
-            <DialogDescription className="font-sans">Update voucher information</DialogDescription>
+            <DialogDescription className="font-sans">
+              Update voucher information
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
@@ -433,7 +528,9 @@ export default function AdminVouchersPage() {
               <Input
                 id="edit-name"
                 value={formData.name || ""}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 className="font-sans"
               />
             </div>
@@ -444,7 +541,12 @@ export default function AdminVouchersPage() {
               <Input
                 id="edit-code"
                 value={formData.code || ""}
-                onChange={(e) => setFormData({ ...formData, code: e.target.value.toUpperCase() })}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    code: e.target.value.toUpperCase(),
+                  })
+                }
                 className="font-sans"
               />
             </div>
@@ -455,7 +557,9 @@ export default function AdminVouchersPage() {
               <Textarea
                 id="edit-description"
                 value={formData.description || ""}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 className="font-sans"
               />
             </div>
@@ -468,7 +572,12 @@ export default function AdminVouchersPage() {
                   id="edit-quantity"
                   type="number"
                   value={formData.quantity || ""}
-                  onChange={(e) => setFormData({ ...formData, quantity: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      quantity: Number(e.target.value),
+                    })
+                  }
                   className="font-sans"
                 />
               </div>
@@ -480,14 +589,20 @@ export default function AdminVouchersPage() {
                   id="edit-expirationDate"
                   type="date"
                   value={formData.expirationDate || ""}
-                  onChange={(e) => setFormData({ ...formData, expirationDate: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, expirationDate: e.target.value })
+                  }
                   className="font-sans"
                 />
               </div>
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditOpen(false)} className="font-sans">
+            <Button
+              variant="outline"
+              onClick={() => setIsEditOpen(false)}
+              className="font-sans"
+            >
               Cancel
             </Button>
             <Button onClick={handleEdit} className="font-sans">
@@ -497,5 +612,5 @@ export default function AdminVouchersPage() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
