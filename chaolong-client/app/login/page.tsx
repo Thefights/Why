@@ -1,62 +1,70 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import Link from "next/link"
-import { useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Eye, EyeOff } from "lucide-react"
-import { Navigation } from "@/components/navigation"
+import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Eye, EyeOff } from "lucide-react";
+import { Navigation } from "@/components/navigation";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({})
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
+  );
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const validateForm = () => {
-    const newErrors: { email?: string; password?: string } = {}
+    const newErrors: { email?: string; password?: string } = {};
 
     if (!email) {
-      newErrors.email = "Email is required"
+      newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(email)) {
-      newErrors.email = "Please enter a valid email address"
+      newErrors.email = "Please enter a valid email address";
     }
 
     if (!password) {
-      newErrors.password = "Password is required"
+      newErrors.password = "Password is required";
     } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters"
+      newErrors.password = "Password must be at least 6 characters";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+    e.preventDefault();
 
-    if (!validateForm()) return
+    if (!validateForm()) return;
 
-    setIsLoading(true)
+    setIsLoading(true);
 
     // Simulate login process
     setTimeout(() => {
-      setIsLoading(false)
-      router.push("/")
-    }, 1500)
-  }
+      setIsLoading(false);
+      router.push("/");
+    }, 1500);
+  };
 
   const handleGoogleSignIn = () => {
     // Placeholder for Google Sign-In
-    console.log("Google Sign-In clicked")
-  }
+    console.log("Google Sign-In clicked");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,7 +74,9 @@ export default function LoginPage() {
         <div className="w-full max-w-md">
           <Card className="border-border shadow-lg">
             <CardHeader className="space-y-1 text-center">
-              <CardTitle className="text-2xl font-serif text-foreground">Welcome Back</CardTitle>
+              <CardTitle className="text-2xl font-serif text-foreground">
+                Welcome Back
+              </CardTitle>
               <CardDescription className="text-muted-foreground font-sans">
                 Sign in to your Chao Long Gia Truyền account
               </CardDescription>
@@ -75,7 +85,10 @@ export default function LoginPage() {
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="email" className="text-sm font-medium text-foreground font-sans">
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-medium text-foreground font-sans"
+                  >
                     Email Address
                   </Label>
                   <Input
@@ -84,14 +97,25 @@ export default function LoginPage() {
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className={`font-sans ${errors.email ? "border-destructive focus:border-destructive" : "border-input"}`}
+                    className={`font-sans ${
+                      errors.email
+                        ? "border-destructive focus:border-destructive"
+                        : "border-input"
+                    }`}
                     disabled={isLoading}
                   />
-                  {errors.email && <p className="text-sm text-destructive font-sans">{errors.email}</p>}
+                  {errors.email && (
+                    <p className="text-sm text-destructive font-sans">
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor="password" className="text-sm font-medium text-foreground font-sans">
+                  <Label
+                    htmlFor="password"
+                    className="text-sm font-medium text-foreground font-sans"
+                  >
                     Password
                   </Label>
                   <div className="relative">
@@ -101,7 +125,11 @@ export default function LoginPage() {
                       placeholder="Enter your password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className={`font-sans pr-10 ${errors.password ? "border-destructive focus:border-destructive" : "border-input"}`}
+                      className={`font-sans pr-10 ${
+                        errors.password
+                          ? "border-destructive focus:border-destructive"
+                          : "border-input"
+                      }`}
                       disabled={isLoading}
                     />
                     <Button
@@ -119,7 +147,11 @@ export default function LoginPage() {
                       )}
                     </Button>
                   </div>
-                  {errors.password && <p className="text-sm text-destructive font-sans">{errors.password}</p>}
+                  {errors.password && (
+                    <p className="text-sm text-destructive font-sans">
+                      {errors.password}
+                    </p>
+                  )}
                 </div>
 
                 <div className="flex justify-end">
@@ -145,7 +177,9 @@ export default function LoginPage() {
                   <span className="w-full border-t border-border" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
-                  <span className="bg-background px-2 text-muted-foreground font-sans">Or continue with</span>
+                  <span className="bg-background px-2 text-muted-foreground font-sans">
+                    Or continue with
+                  </span>
                 </div>
               </div>
 
@@ -179,8 +213,11 @@ export default function LoginPage() {
 
               <div className="text-center">
                 <p className="text-sm text-muted-foreground font-sans">
-                  Don't have an account?{" "}
-                  <Link href="/signup" className="text-primary hover:text-primary/80 transition-colors font-medium">
+                  Don&quot;t have an account?{" "}
+                  <Link
+                    href="/signup"
+                    className="text-primary hover:text-primary/80 transition-colors font-medium"
+                  >
                     Create account
                   </Link>
                 </p>
@@ -190,5 +227,5 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,13 +1,26 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { Badge } from "@/components/ui/badge"
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -16,7 +29,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog"
+} from "@/components/ui/dialog";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -27,20 +40,27 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Plus, Edit, Trash2 } from "lucide-react"
-import { toast } from "@/hooks/use-toast"
+} from "@/components/ui/alert-dialog";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Plus, Edit, Trash2 } from "lucide-react";
+import { toast } from "@/hooks/use-toast";
+import Image from "next/image";
 
 interface Product {
-  id: string
-  name: string
-  description: string
-  price: number
-  category: "appetizer" | "main" | "dessert" | "drink"
-  image: string
-  isAvailable: boolean
-  isPopular: boolean
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  category: "appetizer" | "main" | "dessert" | "drink";
+  image: string;
+  isAvailable: boolean;
+  isPopular: boolean;
 }
 
 const mockProducts: Product[] = [
@@ -84,36 +104,36 @@ const mockProducts: Product[] = [
     isAvailable: false,
     isPopular: false,
   },
-]
+];
 
 export default function AdminProductsPage() {
-  const [products, setProducts] = useState<Product[]>(mockProducts)
-  const [isCreateOpen, setIsCreateOpen] = useState(false)
-  const [isEditOpen, setIsEditOpen] = useState(false)
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
-  const [formData, setFormData] = useState<Partial<Product>>({})
+  const [products, setProducts] = useState<Product[]>(mockProducts);
+  const [isCreateOpen, setIsCreateOpen] = useState(false);
+  const [isEditOpen, setIsEditOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [formData, setFormData] = useState<Partial<Product>>({});
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
-    }).format(price)
-  }
+    }).format(price);
+  };
 
   const getCategoryColor = (category: Product["category"]) => {
     switch (category) {
       case "appetizer":
-        return "bg-green-100 text-green-800 border-green-200"
+        return "bg-green-100 text-green-800 border-green-200";
       case "main":
-        return "bg-blue-100 text-blue-800 border-blue-200"
+        return "bg-blue-100 text-blue-800 border-blue-200";
       case "dessert":
-        return "bg-pink-100 text-pink-800 border-pink-200"
+        return "bg-pink-100 text-pink-800 border-pink-200";
       case "drink":
-        return "bg-orange-100 text-orange-800 border-orange-200"
+        return "bg-orange-100 text-orange-800 border-orange-200";
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
+        return "bg-gray-100 text-gray-800 border-gray-200";
     }
-  }
+  };
 
   const handleCreate = () => {
     const newProduct: Product = {
@@ -125,50 +145,58 @@ export default function AdminProductsPage() {
       image: formData.image || "/diverse-food-spread.png",
       isAvailable: formData.isAvailable ?? true,
       isPopular: formData.isPopular ?? false,
-    }
-    setProducts([...products, newProduct])
-    setIsCreateOpen(false)
-    setFormData({})
+    };
+    setProducts([...products, newProduct]);
+    setIsCreateOpen(false);
+    setFormData({});
     toast({
       title: "Product Created",
       description: `${newProduct.name} has been successfully created.`,
-    })
-  }
+    });
+  };
 
   const handleEdit = () => {
-    if (!selectedProduct) return
+    if (!selectedProduct) return;
     setProducts(
-      products.map((product) => (product.id === selectedProduct.id ? { ...selectedProduct, ...formData } : product)),
-    )
-    setIsEditOpen(false)
-    setSelectedProduct(null)
-    setFormData({})
+      products.map((product) =>
+        product.id === selectedProduct.id
+          ? { ...selectedProduct, ...formData }
+          : product
+      )
+    );
+    setIsEditOpen(false);
+    setSelectedProduct(null);
+    setFormData({});
     toast({
       title: "Product Updated",
       description: "Product has been successfully updated.",
-    })
-  }
+    });
+  };
 
   const handleDelete = (productId: string) => {
-    setProducts(products.filter((product) => product.id !== productId))
+    setProducts(products.filter((product) => product.id !== productId));
     toast({
       title: "Product Deleted",
       description: "Product has been successfully deleted.",
-    })
-  }
+    });
+  };
 
   const openEditDialog = (product: Product) => {
-    setSelectedProduct(product)
-    setFormData(product)
-    setIsEditOpen(true)
-  }
+    setSelectedProduct(product);
+    setFormData(product);
+    setIsEditOpen(true);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-serif font-bold tracking-tight">Products Management</h2>
-          <p className="text-muted-foreground font-sans">Manage your restaurant menu items</p>
+          <h2 className="text-3xl font-serif font-bold tracking-tight">
+            Products Management
+          </h2>
+          <p className="text-muted-foreground font-sans">
+            Manage your restaurant menu items
+          </p>
         </div>
         <Dialog open={isCreateOpen} onOpenChange={setIsCreateOpen}>
           <DialogTrigger asChild>
@@ -179,8 +207,12 @@ export default function AdminProductsPage() {
           </DialogTrigger>
           <DialogContent className="max-w-md">
             <DialogHeader>
-              <DialogTitle className="font-serif">Create New Product</DialogTitle>
-              <DialogDescription className="font-sans">Add a new item to your menu</DialogDescription>
+              <DialogTitle className="font-serif">
+                Create New Product
+              </DialogTitle>
+              <DialogDescription className="font-sans">
+                Add a new item to your menu
+              </DialogDescription>
             </DialogHeader>
             <div className="space-y-4">
               <div>
@@ -190,7 +222,9 @@ export default function AdminProductsPage() {
                 <Input
                   id="name"
                   value={formData.name || ""}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
                   className="font-sans"
                 />
               </div>
@@ -201,7 +235,9 @@ export default function AdminProductsPage() {
                 <Textarea
                   id="description"
                   value={formData.description || ""}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
                   className="font-sans"
                 />
               </div>
@@ -213,7 +249,9 @@ export default function AdminProductsPage() {
                   id="price"
                   type="number"
                   value={formData.price || ""}
-                  onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                  onChange={(e) =>
+                    setFormData({ ...formData, price: Number(e.target.value) })
+                  }
                   className="font-sans"
                 />
               </div>
@@ -223,7 +261,12 @@ export default function AdminProductsPage() {
                 </Label>
                 <Select
                   value={formData.category}
-                  onValueChange={(value) => setFormData({ ...formData, category: value as Product["category"] })}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      category: value as Product["category"],
+                    })
+                  }
                 >
                   <SelectTrigger className="font-sans">
                     <SelectValue placeholder="Select category" />
@@ -238,7 +281,11 @@ export default function AdminProductsPage() {
               </div>
             </div>
             <DialogFooter>
-              <Button variant="outline" onClick={() => setIsCreateOpen(false)} className="font-sans">
+              <Button
+                variant="outline"
+                onClick={() => setIsCreateOpen(false)}
+                className="font-sans"
+              >
                 Cancel
               </Button>
               <Button onClick={handleCreate} className="font-sans">
@@ -252,7 +299,9 @@ export default function AdminProductsPage() {
       <Card>
         <CardHeader>
           <CardTitle className="font-serif">All Products</CardTitle>
-          <CardDescription className="font-sans">{products.length} products in your menu</CardDescription>
+          <CardDescription className="font-sans">
+            {products.length} products in your menu
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
@@ -272,7 +321,7 @@ export default function AdminProductsPage() {
                 {products.map((product) => (
                   <TableRow key={product.id}>
                     <TableCell>
-                      <img
+                      <Image
                         src={product.image || "/placeholder.svg"}
                         alt={product.name}
                         className="w-12 h-12 rounded-lg object-cover"
@@ -280,16 +329,26 @@ export default function AdminProductsPage() {
                     </TableCell>
                     <TableCell>
                       <div>
-                        <div className="font-medium font-sans">{product.name}</div>
+                        <div className="font-medium font-sans">
+                          {product.name}
+                        </div>
                         <div className="text-sm text-muted-foreground font-sans line-clamp-1">
                           {product.description}
                         </div>
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge className={`${getCategoryColor(product.category)} font-sans`}>{product.category}</Badge>
+                      <Badge
+                        className={`${getCategoryColor(
+                          product.category
+                        )} font-sans`}
+                      >
+                        {product.category}
+                      </Badge>
                     </TableCell>
-                    <TableCell className="font-sans">{formatPrice(product.price)}</TableCell>
+                    <TableCell className="font-sans">
+                      {formatPrice(product.price)}
+                    </TableCell>
                     <TableCell>
                       <Badge
                         className={
@@ -303,7 +362,9 @@ export default function AdminProductsPage() {
                     </TableCell>
                     <TableCell>
                       {product.isPopular && (
-                        <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 font-sans">Popular</Badge>
+                        <Badge className="bg-yellow-100 text-yellow-800 border-yellow-200 font-sans">
+                          Popular
+                        </Badge>
                       )}
                     </TableCell>
                     <TableCell>
@@ -328,13 +389,19 @@ export default function AdminProductsPage() {
                           </AlertDialogTrigger>
                           <AlertDialogContent>
                             <AlertDialogHeader>
-                              <AlertDialogTitle className="font-serif">Delete Product</AlertDialogTitle>
+                              <AlertDialogTitle className="font-serif">
+                                Delete Product
+                              </AlertDialogTitle>
                               <AlertDialogDescription className="font-sans">
-                                Are you sure you want to delete "{product.name}"? This action cannot be undone.
+                                Are you sure you want to delete &quot;
+                                {product.name}
+                                &quot;? This action cannot be undone.
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <AlertDialogCancel className="font-sans">Cancel</AlertDialogCancel>
+                              <AlertDialogCancel className="font-sans">
+                                Cancel
+                              </AlertDialogCancel>
                               <AlertDialogAction
                                 onClick={() => handleDelete(product.id)}
                                 className="font-sans bg-red-600 hover:bg-red-700"
@@ -359,7 +426,9 @@ export default function AdminProductsPage() {
         <DialogContent className="max-w-md">
           <DialogHeader>
             <DialogTitle className="font-serif">Edit Product</DialogTitle>
-            <DialogDescription className="font-sans">Update product information</DialogDescription>
+            <DialogDescription className="font-sans">
+              Update product information
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div>
@@ -369,7 +438,9 @@ export default function AdminProductsPage() {
               <Input
                 id="edit-name"
                 value={formData.name || ""}
-                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
                 className="font-sans"
               />
             </div>
@@ -380,7 +451,9 @@ export default function AdminProductsPage() {
               <Textarea
                 id="edit-description"
                 value={formData.description || ""}
-                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, description: e.target.value })
+                }
                 className="font-sans"
               />
             </div>
@@ -392,7 +465,9 @@ export default function AdminProductsPage() {
                 id="edit-price"
                 type="number"
                 value={formData.price || ""}
-                onChange={(e) => setFormData({ ...formData, price: Number(e.target.value) })}
+                onChange={(e) =>
+                  setFormData({ ...formData, price: Number(e.target.value) })
+                }
                 className="font-sans"
               />
             </div>
@@ -402,7 +477,12 @@ export default function AdminProductsPage() {
               </Label>
               <Select
                 value={formData.category}
-                onValueChange={(value) => setFormData({ ...formData, category: value as Product["category"] })}
+                onValueChange={(value) =>
+                  setFormData({
+                    ...formData,
+                    category: value as Product["category"],
+                  })
+                }
               >
                 <SelectTrigger className="font-sans">
                   <SelectValue placeholder="Select category" />
@@ -417,7 +497,11 @@ export default function AdminProductsPage() {
             </div>
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setIsEditOpen(false)} className="font-sans">
+            <Button
+              variant="outline"
+              onClick={() => setIsEditOpen(false)}
+              className="font-sans"
+            >
               Cancel
             </Button>
             <Button onClick={handleEdit} className="font-sans">
@@ -427,5 +511,5 @@ export default function AdminProductsPage() {
         </DialogContent>
       </Dialog>
     </div>
-  )
+  );
 }
