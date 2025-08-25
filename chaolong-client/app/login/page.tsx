@@ -6,54 +6,59 @@ import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Eye, EyeOff } from "lucide-react";
 import { Navigation } from "@/components/navigation";
-import ValidateField from "@/components/validate/validate-field";
-import useValidation from "@/components/hooks/use-validation";
-import { useFormValidity } from "@/components/hooks/use-form-validity";
-import { useAuth } from "@/contexts/auth-context";
 
 export default function LoginPage() {
-  const { validateExist } = useValidation();
-  const { login } = useAuth();
-  const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState({
-    email: "",
-    password: "",
-  });
-
-  const isValid = useFormValidity(
-    { email, password },
-    { email: error.email, password: error.password },
-    ["email", "password"] as const
+  const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState<{ email?: string; password?: string }>(
+    {}
   );
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  const handleEmailExistBlur = () => {
-    const { validate, error } = validateExist(email);
-    setError((prev) => ({ ...prev, email: validate ? "" : error }));
-  };
+  const validateForm = () => {
+    const newErrors: { email?: string; password?: string } = {};
 
-  const handlePasswordExistBlur = () => {
-    const { validate, error } = validateExist(password);
-    setError((prev) => ({ ...prev, password: validate ? "" : error }));
+    if (!email) {
+      newErrors.email = "Email is required";
+    } else if (!/\S+@\S+\.\S+/.test(email)) {
+      newErrors.email = "Please enter a valid email address";
+    }
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    if (!validateForm()) return;
+
     setIsLoading(true);
 
-    try {
-      await login(email, password);
-      router.push("/");
-    } catch (error) {
-      console.error("Login failed:", error);
-    } finally {
+    // Simulate login process
+    setTimeout(() => {
       setIsLoading(false);
-    }
+      router.push("/");
+    }, 1500);
   };
 
   const handleGoogleSignIn = () => {
@@ -72,32 +77,92 @@ export default function LoginPage() {
               <CardTitle className="text-2xl font-serif text-foreground">
                 Welcome Back
               </CardTitle>
+              <CardDescription className="text-muted-foreground font-sans">
+                Sign in to your Chao Long Gia Truyền account
+              </CardDescription>
             </CardHeader>
 
             <CardContent className="space-y-6">
               <form onSubmit={handleSubmit} className="space-y-4">
                 <div className="space-y-2">
-                  <ValidateField
+                  <Label
+                    htmlFor="email"
+                    className="text-sm font-medium text-foreground font-sans"
+                  >
+                    Email Address
+                  </Label>
+                  <Input
+                    id="email"
                     type="email"
                     title="Email Address"
                     placeholder="Enter your email"
                     error={error.email}
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    onBlur={handleEmailExistBlur}
+                    className={`font-sans ${
+                      errors.email
+                        ? "border-destructive focus:border-destructive"
+                        : "border-input"
+                    }`}
+                    disabled={isLoading}
                   />
+                  {errors.email && (
+                    <p className="text-sm text-destructive font-sans">
+                      {errors.email}
+                    </p>
+                  )}
                 </div>
 
                 <div className="space-y-2">
-                  <ValidateField
-                    type="password"
-                    title="Password"
-                    placeholder="Enter your password"
-                    error={error.password}
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    onBlur={handlePasswordExistBlur}
-                  />
+                  <Label
+                    htmlFor="password"
+                    className="text-sm font-medium text-foreground font-sans"
+                  >
+                    Password
+                  </Label>
+                  <div className="relative">
+                    <Input
+                      id="password"
+                      type={showPassword ? "text" : "password"}
+                      placeholder="Enter your password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className={`font-sans pr-10 ${
+                        errors.password
+                          ? "border-destructive focus:border-destructive"
+                          : "border-input"
+                      }`}
+                      disabled={isLoading}
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      size="sm"
+                      className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                      onClick={() => setShowPassword(!showPassword)}
+                      disabled={isLoading}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="h-4 w-4 text-muted-foreground" />
+                      ) : (
+                        <Eye className="h-4 w-4 text-muted-foreground" />
+                      )}
+                    </Button>
+                  </div>
+                  {errors.password && (
+                    <p className="text-sm text-destructive font-sans">
+                      {errors.password}
+                    </p>
+                  )}
+                </div>
+
+                <div className="flex justify-end">
+                  <Link
+                    href="/forgot-password"
+                    className="text-sm text-primary hover:text-primary/80 transition-colors font-sans"
+                  >
+                    Forgot password?
+                  </Link>
                 </div>
 
                 <Button
@@ -150,9 +215,9 @@ export default function LoginPage() {
 
               <div className="text-center">
                 <p className="text-sm text-muted-foreground font-sans">
-                  Don&apos;t have an account?{" "}
+                  Don't have an account?{" "}
                   <Link
-                    href="/register"
+                    href="/signup"
                     className="text-primary hover:text-primary/80 transition-colors font-medium"
                   >
                     Create account
