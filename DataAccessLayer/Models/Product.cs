@@ -1,10 +1,12 @@
 ﻿using DataAccessLayer.Models.AbstractEntities;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace DataAccessLayer.Models
 {
     public class Product : ImageEntity
     {
+        [JsonIgnore]
         public ICollection<OrderDetail> OrderDetails { get; set; } = [];
 
         [Required]
@@ -24,6 +26,7 @@ namespace DataAccessLayer.Models
         [Required]
         public int ProductCategoryId { get; set; }
 
-        public ProductCategory ProductCategory { get; set; }
+        [JsonIgnore]
+        public ProductCategory? ProductCategory { get; set; }
     }
 }
