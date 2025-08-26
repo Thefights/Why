@@ -1,13 +1,15 @@
-﻿using DataAccessLayer.Models.AbstractEntities;
+﻿using BusinessLogicLayer.DTO.Abstract;
+using DataAccessLayer.Models.AbstractEntities;
 
 namespace BusinessLogicLayer.Interfaces.Base
 {
-    public interface ICrudService<T> where T : BaseEntity
+    public interface ICrudService<DTO, T> where T : BaseEntity where DTO : BaseDTO
     {
-        public Task<IEnumerable<T>> GetAllAsync();
-        public Task<T?> GetByIdAsync(int id);
-        public Task<T> CreateAsync(T entity);
-        public Task UpdateAsync(T entity);
-        public Task DeleteAsync(T entity);
+        public Task<IEnumerable<DTO>> GetAllAsync();
+        public Task<DTO?> GetByIdAsync(int id);
+        public Task<DTO> CreateAsync(DTO dto);
+        public Task<DTO> CreateWithImageAsync(DTO dto);
+        public Task UpdateAsync(DTO dto);
+        public Task DeleteAsync(DTO dto);
     }
 }
