@@ -1,11 +1,12 @@
 ﻿using BusinessLogicLayer.Interfaces.Base;
+using BusinessLogicLayer.Interfaces.Services;
 using DataAccessLayer.Models.AbstractEntities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chaolong_sever.Controllers.Base
 {
     [ApiController]
-    public abstract class CrudController<T>(ICrudService<T> _crudService) : ControllerBase where T : BaseEntity
+    public abstract class CrudController<T>(ICrudService<T> _crudService, IImageService? _imageService = null) : ControllerBase where T : BaseEntity
     {
         [HttpGet]
         public virtual async Task<IActionResult> GetAllAsync()
@@ -20,17 +21,17 @@ namespace chaolong_sever.Controllers.Base
             return Ok(new { Message = "Get all records successfully", Data = entities });
         }
 
-        [HttpPost]
-        public virtual async Task<IActionResult> CreateAsync([FromBody] T entity)
+        [HttpPost("create")]
+        public virtual async Task<IActionResult> CreateAsync([FromForm] T entity, IFormFile? imageFile)
         {
-            if (entity == null)
+            if (imageFile != null && entity is ImageEntity imageEntity)
             {
-                return BadRequest("Entity is null.");
+                var imageUrl = await _imageService.UploadImageAsync(imageFile, "bucket-name");
+                imageEntity.ImageUrl = imageUrl;
             }
 
-            var createdEntity = await _crudService.CreateAsync(entity);
-
-            return Ok(new { Message = "Create new record successfully", Data = entity });
+            var result = await _crudService.CreateAsync(entity);
+            return Ok(new { Message = "Create new record successfully", Data = result });
         }
 
         [HttpPut]
