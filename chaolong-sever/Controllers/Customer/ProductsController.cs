@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.Interfaces.Services;
+﻿using BusinessLogicLayer.DTO;
+using BusinessLogicLayer.Interfaces.Services;
 using chaolong_sever.Controllers.Base;
 using DataAccessLayer.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ namespace chaolong_sever.Controllers.Customer
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductsController(IProductService _productService, IImageService _imageService) : CrudController<Product>(_productService, _imageService)
+    public class ProductsController(IProductService _productService) : CrudController<ProductDTO, Product>(_productService)
     {
         //[HttpPost]
         //public async Task<IActionResult> CreateAsync([FromForm] Product entity, IFormFile imageFile)

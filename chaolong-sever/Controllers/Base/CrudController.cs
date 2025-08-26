@@ -1,12 +1,12 @@
-﻿using BusinessLogicLayer.Interfaces.Base;
-using BusinessLogicLayer.Interfaces.Services;
+﻿using BusinessLogicLayer.DTO.Abstract;
+using BusinessLogicLayer.Interfaces.Base;
 using DataAccessLayer.Models.AbstractEntities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chaolong_sever.Controllers.Base
 {
     [ApiController]
-    public abstract class CrudController<T>(ICrudService<T> _crudService, IImageService? _imageService = null) : ControllerBase where T : BaseEntity
+    public abstract class CrudController<DTO, T>(ICrudService<DTO, T> _crudService) : ControllerBase where DTO : BaseDTO where T : BaseEntity
     {
         [HttpGet]
         public virtual async Task<IActionResult> GetAllAsync()
@@ -22,36 +22,39 @@ namespace chaolong_sever.Controllers.Base
         }
 
         [HttpPost("create")]
-        public virtual async Task<IActionResult> CreateAsync([FromForm] T entity, IFormFile? imageFile)
+        public virtual async Task<IActionResult> CreateAsync([FromForm] DTO dto)
         {
-            if (imageFile != null && entity is ImageEntity imageEntity)
+            if (dto is ImageDTO imageDTO)
             {
-                var imageUrl = await _imageService.UploadImageAsync(imageFile, "bucket-name");
-                imageEntity.ImageUrl = imageUrl;
+                await _crudService.CreateWithImageAsync(dto);
+            }
+            else
+            {
+                await _crudService.CreateAsync(dto);
+
             }
 
-            var result = await _crudService.CreateAsync(entity);
-            return Ok(new { Message = "Create new record successfully", Data = result });
+            return Ok(new { Message = "Create new record successfully", Data = dto });
         }
 
-        [HttpPut]
-        public virtual async Task<IActionResult> UpdateAsync([FromBody] T entity)
-        {
-            if (entity == null)
-            {
-                return BadRequest("Entity is null or ID mismatch.");
-            }
+        //[HttpPut]
+        //public virtual async Task<IActionResult> UpdateAsync([FromBody] DTO dto)
+        //{
+        //    if (dto == null)
+        //    {
+        //        return BadRequest("Entity is null or ID mismatch.");
+        //    }
 
-            var existingEntity = await _crudService.GetByIdAsync(entity.Id);
+        //    var existingEntity = await _crudService.GetByIdAsync(dto.Id);
 
-            if (existingEntity == null)
-            {
-                return NotFound("Entity not found.");
-            }
+        //    if (existingEntity == null)
+        //    {
+        //        return NotFound("Entity not found.");
+        //    }
 
-            await _crudService.UpdateAsync(entity);
-            return Ok(new { Message = "Update record successfully", Data = entity });
-        }
+        //    await _crudService.UpdateAsync(dto);
+        //    return Ok(new { Message = "Update record successfully", Data = dto });
+        //}
 
         [HttpDelete("{id}")]
         public virtual async Task<IActionResult> DeleteAsync(int id)

@@ -1,4 +1,4 @@
-using chaolong_sever.Extenstions;
+﻿using chaolong_sever.Extenstions;
 using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
 using Swashbuckle.AspNetCore.Filters;
@@ -19,18 +19,18 @@ builder.Services.AddSwaggerGen(c =>
     c.ExampleFilters();
 });
 
-//builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-//builder.Services.AddAWSService<IAmazonS3>();
 builder.Services.AddAWSService(builder.Configuration);
 builder.Services.AddExampleService(builder.Configuration);
 builder.Services.AddScopeService();
 
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 
 app.UseHttpsRedirection();
+
 
 app.UseSwagger();
 app.UseSwaggerUI(c =>
