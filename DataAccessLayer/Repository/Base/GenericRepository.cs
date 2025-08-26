@@ -24,18 +24,15 @@ namespace DataAccessLayer.Repository.Base
             return entity;
         }
 
-        public async Task<T> UpdateAsync(int id)
+        public T Update(T entity)
         {
-            var entity = await GetByIdAsync(id);
-            _dbContext.Set<T>().Update(entity);
-            return entity;
+            var result = _dbContext.Set<T>().Update(entity);
+            return result.Entity;
         }
 
-        public async Task<T> DeleteAsync(int id)
+        public void Delete(T entity)
         {
-            var entity = await GetByIdAsync(id);
             _dbContext.Set<T>().Remove(entity);
-            return entity;
         }
     }
 }
