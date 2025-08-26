@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.Interfaces.Base;
 using DataAccessLayer.Models;
 
-namespace BusinessLogicLayer.Interfaces
+namespace BusinessLogicLayer.Interfaces.Services
 {
     public interface IProductService : ICrudService<Product>
     {

@@ -1,10 +1,7 @@
-using Amazon.S3;
-using BusinessLogicLayer.Implements;
-using BusinessLogicLayer.Interfaces;
+using chaolong_sever.Extenstions;
 using DataAccessLayer.Data;
-using DataAccessLayer.Repository.Base;
-using DataAccessLayer.Repository.IRepository.Base;
 using Microsoft.EntityFrameworkCore;
+using Swashbuckle.AspNetCore.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,16 +9,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("ChaoLongCoTham")));
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("ChaoLongCoTham"));
+    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+});
 
-builder.Services.AddSwaggerGen();
-builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
-builder.Services.AddAWSService<IAmazonS3>();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.ExampleFilters();
+});
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<IImageService, ImageService>();
+//builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
+//builder.Services.AddAWSService<IAmazonS3>();
+builder.Services.AddAWSService(builder.Configuration);
+builder.Services.AddExampleService(builder.Configuration);
+builder.Services.AddScopeService();
 
 
 var app = builder.Build();
@@ -35,6 +37,7 @@ app.UseSwaggerUI(c =>
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "Chao Long API v1");
     c.RoutePrefix = "swagger";
+
 });
 
 
