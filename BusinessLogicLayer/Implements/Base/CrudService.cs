@@ -10,24 +10,33 @@ namespace BusinessLogicLayer.Implements.Base
         {
             return await _unitOfWork.Repository<T>().GetByIdAsync(id);
         }
+
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _unitOfWork.Repository<T>().GetAllAsync();
         }
+
         public async Task<T> CreateAsync(T entity)
         {
             await _unitOfWork.Repository<T>().CreateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
+
             return entity;
         }
-        public async Task UpdateAsync(int id)
+
+        public async Task UpdateAsync(T entity)
         {
-            await _unitOfWork.Repository<T>().UpdateAsync(id);
+            var existEntity = await _unitOfWork.Repository<T>().GetByIdAsync(entity.Id);
+
+            _unitOfWork.Repository<T>().Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }
-        public async Task DeleteAsync(int id)
+
+        public async Task DeleteAsync(T entity)
         {
-            await _unitOfWork.Repository<T>().DeleteAsync(id);
+            var existEntity = await _unitOfWork.Repository<T>().GetByIdAsync(entity.Id);
+
+            _unitOfWork.Repository<T>().Delete(entity);
             await _unitOfWork.SaveChangesAsync();
         }
     }
