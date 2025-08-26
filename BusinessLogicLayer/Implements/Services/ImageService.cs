@@ -1,8 +1,8 @@
 ﻿using Amazon.S3;
-using BusinessLogicLayer.Interfaces;
+using BusinessLogicLayer.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 
-namespace BusinessLogicLayer.Implements
+namespace BusinessLogicLayer.Implements.Services
 {
     public class ImageService : IImageService
     {
