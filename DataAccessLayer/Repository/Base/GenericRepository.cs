@@ -10,7 +10,7 @@ namespace DataAccessLayer.Repository.Base
     : IGenericRepository<T>
        where T : BaseEntity
     {
-        public async Task<List<T>> GetAllAsync(string[] _include)
+        public async Task<List<T>> GetAllAsync(string[]? _include)
         {
             return await ApplyIncludes(_dbContext.Set<T>(), _include).ToListAsync();
         }
@@ -20,7 +20,7 @@ namespace DataAccessLayer.Repository.Base
             return await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<T> GetByCondition(Expression<Func<T, bool>> predicate, string[] _include)
+        public async Task<T> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include)
         {
             var entity = await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(predicate);
             if (entity == null)
@@ -47,11 +47,14 @@ namespace DataAccessLayer.Repository.Base
             _dbContext.Set<T>().Remove(entity);
         }
 
-        private IQueryable<T> ApplyIncludes(IQueryable<T> query, string[] _includes)
+        private IQueryable<T> ApplyIncludes(IQueryable<T> query, string[]? _includes)
         {
-            foreach (var include in _includes)
+            if (_includes != null)
             {
-                query = query.Include(include);
+                foreach (var include in _includes)
+                {
+                    query = query.Include(include);
+                }
             }
             return query;
         }
