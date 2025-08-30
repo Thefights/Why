@@ -15,7 +15,7 @@ namespace DataAccessLayer.Repository.Base
             return await ApplyIncludes(_dbContext.Set<T>(), _include).ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id, string[] _include)
+        public async Task<T?> GetByIdAsync(int id, string[]? _include)
         {
             return await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(e => e.Id == id);
         }
