@@ -15,7 +15,7 @@ namespace chaolong_sever.Extenstions
             _services.AddScoped<IProductService, ProductService>();
             _services.AddScoped<IVoucherService, VoucherService>();
             //_services.AddScoped<IUserService, UserService>();
-            //_services.AddScoped<IOrderService, OrderService>();
+            _services.AddScoped<IOrderService, OrderService>();
 
             return _services;
         }

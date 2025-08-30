@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using BusinessLogicLayer.DTO.OrderDetailDTO;
+using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.DTO.ProductDTO;
 using BusinessLogicLayer.DTO.VoucherDTO;
 using DataAccessLayer.Models;
@@ -19,6 +21,12 @@ namespace BusinessLogicLayer.Profiles
             CreateMap<Voucher, VoucherUpdateDTO>().ReverseMap();
             CreateMap<Voucher, VoucherGetDTO>().ReverseMap();
 
+            //Order
+            CreateMap<Order, OrderUpdateDTO>().ReverseMap();
+            CreateMap<Order, OrderGetDTO>().ReverseMap();
+
+            //OrderDetail
+            CreateMap<OrderDetail, OrderDetailGetDTO>().ReverseMap();
         }
     }
 }

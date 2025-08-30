@@ -13,6 +13,10 @@ namespace DataAccessLayer.Models
         public double UnitPrice { get; set; }
 
         [Required]
+        [Range(0.0, double.MaxValue, ErrorMessage = "Total must be a non-negative value")]
+        public double Total { get; set; } = 0;
+
+        [Required]
         public int OrderId { get; set; }
         public Order Order { get; set; }
 
