@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Base
 {
-    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
         where CreateDTO : BaseDTO
         where GetDTO : BaseDTO
         where UpdateDTO : BaseDTO
