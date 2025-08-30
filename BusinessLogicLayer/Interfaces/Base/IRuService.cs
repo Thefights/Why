@@ -1,13 +1,10 @@
 ﻿namespace BusinessLogicLayer.Interfaces.Base
 {
-    public interface ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+    public interface IRuService<GetDTO, UpdateDTO, T>
     {
         public Task<GetDTO> GetByIdAsync(int id);
         public Task<IEnumerable<GetDTO>> GetAllAsync();
-        public Task<CreateDTO> CreateAsync(CreateDTO dto);
-        public Task<CreateDTO> CreateWithImageAsync(CreateDTO dto);
         public Task UpdateAsync(UpdateDTO dto);
         public Task UpdateWithImageAsync(UpdateDTO dto);
-        public Task DeleteAsync(int id);
     }
 }

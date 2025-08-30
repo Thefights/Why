@@ -84,6 +84,9 @@ namespace DataAccessLayer.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<double>("Total")
+                        .HasColumnType("float");
+
                     b.Property<double>("UnitPrice")
                         .HasColumnType("float");
 
@@ -99,6 +102,7 @@ namespace DataAccessLayer.Migrations
                             OrderId = 1,
                             ProductId = 1,
                             Quantity = 2,
+                            Total = 5.0,
                             UnitPrice = 2.5
                         },
                         new
@@ -106,6 +110,7 @@ namespace DataAccessLayer.Migrations
                             OrderId = 1,
                             ProductId = 3,
                             Quantity = 1,
+                            Total = 0.5,
                             UnitPrice = 0.5
                         });
                 });

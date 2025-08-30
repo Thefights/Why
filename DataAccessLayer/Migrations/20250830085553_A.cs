@@ -148,7 +148,8 @@ namespace DataAccessLayer.Migrations
                     OrderId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    UnitPrice = table.Column<double>(type: "float", nullable: false)
+                    UnitPrice = table.Column<double>(type: "float", nullable: false),
+                    Total = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -218,11 +219,11 @@ namespace DataAccessLayer.Migrations
 
             migrationBuilder.InsertData(
                 table: "OrderDetail",
-                columns: new[] { "OrderId", "ProductId", "Quantity", "UnitPrice" },
+                columns: new[] { "OrderId", "ProductId", "Quantity", "Total", "UnitPrice" },
                 values: new object[,]
                 {
-                    { 1, 1, 2, 2.5 },
-                    { 1, 3, 1, 0.5 }
+                    { 1, 1, 2, 5.0, 2.5 },
+                    { 1, 3, 1, 0.5, 0.5 }
                 });
 
             migrationBuilder.CreateIndex(
