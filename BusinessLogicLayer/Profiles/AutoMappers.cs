@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogicLayer.DTO;
+using BusinessLogicLayer.DTO.ProductDTO;
 using DataAccessLayer.Models;
 
 namespace BusinessLogicLayer.Profiles
@@ -8,7 +8,10 @@ namespace BusinessLogicLayer.Profiles
     {
         public AutoMappers()
         {
-            CreateMap<Product, ProductDTO>().ReverseMap();
+            CreateMap<Product, ProductCreateDTO>().ReverseMap();
+            CreateMap<Product, ProductUpdateDTO>().ReverseMap();
+            CreateMap<Product, ProductGetDTO>().ReverseMap();
+
         }
     }
 }
