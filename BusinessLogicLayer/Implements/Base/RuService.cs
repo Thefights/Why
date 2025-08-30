@@ -8,20 +8,20 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Base
 {
-    public class RuService<GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService = null) : IRuService<GetDTO, UpdateDTO, T>
+    public class RuService<GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, string[] _includes = null, IImageService? _imageService = null) : IRuService<GetDTO, UpdateDTO, T>
         where GetDTO : BaseDTO
         where UpdateDTO : BaseDTO
         where T : BaseEntity
     {
         public async Task<GetDTO> GetByIdAsync(int id)
         {
-            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id);
+            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id, _includes);
             return _mapper.Map<GetDTO>(entity);
         }
 
         public async Task<IEnumerable<GetDTO>> GetAllAsync()
         {
-            var entities = await _unitOfWork.Repository<T>().GetAllAsync();
+            var entities = await _unitOfWork.Repository<T>().GetAllAsync(_includes);
             return _mapper.Map<IEnumerable<GetDTO>>(entities);
         }
 

@@ -12,6 +12,8 @@ builder.Services.AddControllers()
      .AddJsonOptions(options =>
      {
          options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+         //Ignore object cycle
+         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
      });
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>

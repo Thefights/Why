@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Base
 {
-    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService = null, string[] _includes = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
         where CreateDTO : BaseDTO
         where GetDTO : BaseDTO
         where UpdateDTO : BaseDTO
@@ -16,13 +16,13 @@ namespace BusinessLogicLayer.Implements.Base
     {
         public async Task<GetDTO> GetByIdAsync(int id)
         {
-            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id);
+            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id, _includes);
             return _mapper.Map<GetDTO>(entity);
         }
 
         public async Task<IEnumerable<GetDTO>> GetAllAsync()
         {
-            var entities = await _unitOfWork.Repository<T>().GetAllAsync();
+            var entities = await _unitOfWork.Repository<T>().GetAllAsync(_includes);
             return _mapper.Map<IEnumerable<GetDTO>>(entities);
         }
 
@@ -89,7 +89,7 @@ namespace BusinessLogicLayer.Implements.Base
 
         public async Task DeleteAsync(int id)
         {
-            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id);
+            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id, _includes);
 
             if (entity == null)
             {
