@@ -1,8 +1,8 @@
-﻿using BusinessLogicLayer.DTO.Abstract;
+﻿using BusinessLogicLayer.DTO.Abstract.ImageDTO;
 
-namespace BusinessLogicLayer.DTO
+namespace BusinessLogicLayer.DTO.ProductDTO
 {
-    public class ProductDTO : ImageDTO
+    public class ProductGetDTO : GetImageDTO
     {
         public string Name { get; set; } = string.Empty;
 

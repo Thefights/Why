@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLogicLayer.DTO.Abstract;
+using BusinessLogicLayer.DTO.Abstract.Base;
 using BusinessLogicLayer.Interfaces.Base;
 using BusinessLogicLayer.Interfaces.Services;
 using DataAccessLayer.Models.AbstractEntities;
@@ -8,21 +8,25 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Base
 {
-    public class CrudService<DTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService) : ICrudService<DTO, T> where DTO : BaseDTO where T : BaseEntity
+    public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+        where CreateDTO : BaseDTO
+        where GetDTO : BaseDTO
+        where UpdateDTO : BaseDTO
+        where T : BaseEntity
     {
-        public async Task<DTO> GetByIdAsync(int id)
+        public async Task<GetDTO> GetByIdAsync(int id)
         {
             var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id);
-            return _mapper.Map<DTO>(entity);
+            return _mapper.Map<GetDTO>(entity);
         }
 
-        public async Task<IEnumerable<DTO>> GetAllAsync()
+        public async Task<IEnumerable<GetDTO>> GetAllAsync()
         {
             var entities = await _unitOfWork.Repository<T>().GetAllAsync();
-            return _mapper.Map<IEnumerable<DTO>>(entities);
+            return _mapper.Map<IEnumerable<GetDTO>>(entities);
         }
 
-        public async Task<DTO> CreateAsync(DTO dto)
+        public async Task<CreateDTO> CreateAsync(CreateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
             await _unitOfWork.Repository<T>().CreateAsync(entity);
@@ -31,11 +35,11 @@ namespace BusinessLogicLayer.Implements.Base
             return dto;
         }
 
-        public async Task<DTO> CreateWithImageAsync(DTO dto)
+        public async Task<CreateDTO> CreateWithImageAsync(CreateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
 
-            var dtoType = typeof(DTO);
+            var dtoType = typeof(CreateDTO);
             var imageFileProp = dtoType.GetProperty("ImageFile");
 
             var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
@@ -54,19 +58,43 @@ namespace BusinessLogicLayer.Implements.Base
             await _unitOfWork.Repository<T>().CreateAsync(entity);
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<DTO>(entity);
+            return _mapper.Map<CreateDTO>(entity);
         }
 
-        public async Task UpdateAsync(DTO dto)
+        public async Task UpdateAsync(UpdateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
             _unitOfWork.Repository<T>().Update(entity);
             await _unitOfWork.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(DTO dto)
+        public async Task UpdateWithImageAsync(UpdateDTO dto)
         {
             var entity = _mapper.Map<T>(dto);
+            var dtoType = typeof(UpdateDTO);
+            var imageFileProp = dtoType.GetProperty("ImageFile");
+            var imageFile = imageFileProp?.GetValue(dto) as IFormFile;
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var imageUrlResult = await _imageService.UploadImageAsync(imageFile, "chaolong-bucket");
+                var imageProperty = typeof(T).GetProperty("ImageUrl");
+                if (imageProperty != null && imageProperty.PropertyType == typeof(string))
+                {
+                    imageProperty.SetValue(entity, imageUrlResult);
+                }
+            }
+            _unitOfWork.Repository<T>().Update(entity);
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var entity = await _unitOfWork.Repository<T>().GetByIdAsync(id);
+
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"Entity with ID {id} not found.");
+            }
 
             _unitOfWork.Repository<T>().Delete(entity);
             await _unitOfWork.SaveChangesAsync();
