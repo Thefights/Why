@@ -7,7 +7,7 @@ using DataAccessLayer.Repository.IRepository.Base;
 
 namespace BusinessLogicLayer.Implements.Services
 {
-    public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper) : RuService<OrderGetDTO, OrderUpdateDTO, Order>(_unitOfWork, _mapper), IOrderService
+    public class OrderService(IUnitOfWork _unitOfWork, IMapper _mapper) : RuService<OrderGetDTO, OrderUpdateDTO, Order>(_unitOfWork, _mapper, new[] { "OrderDetails" }), IOrderService
     {
         //public async Task<IEnumerable<OrderGetDTO>> GetOrderIncludeOrderDetail()
         //{

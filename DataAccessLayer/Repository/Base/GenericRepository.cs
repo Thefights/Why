@@ -2,6 +2,7 @@
 using DataAccessLayer.Models.AbstractEntities;
 using DataAccessLayer.Repository.IRepository.Base;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repository.Base
 {
@@ -9,19 +10,19 @@ namespace DataAccessLayer.Repository.Base
     : IGenericRepository<T>
        where T : BaseEntity
     {
-        public async Task<List<T>> GetAllAsync()
+        public async Task<List<T>> GetAllAsync(string[] _include)
         {
-            return await _dbContext.Set<T>().ToListAsync();
+            return await ApplyIncludes(_dbContext.Set<T>(), _include).ToListAsync();
         }
 
-        public async Task<T?> GetByIdAsync(int id)
+        public async Task<T?> GetByIdAsync(int id, string[] _include)
         {
-            return await _dbContext.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+            return await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(e => e.Id == id);
         }
 
-        public async Task<T> GetByCondition(Func<T, bool> predicate)
+        public async Task<T> GetByCondition(Expression<Func<T, bool>> predicate, string[] _include)
         {
-            var entity = await _dbContext.Set<T>().FirstOrDefaultAsync(e => predicate(e));
+            var entity = await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(predicate);
             if (entity == null)
             {
                 throw new KeyNotFoundException("Entity not found.");
@@ -44,6 +45,15 @@ namespace DataAccessLayer.Repository.Base
         public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
+        }
+
+        private IQueryable<T> ApplyIncludes(IQueryable<T> query, string[] _includes)
+        {
+            foreach (var include in _includes)
+            {
+                query = query.Include(include);
+            }
+            return query;
         }
     }
 }

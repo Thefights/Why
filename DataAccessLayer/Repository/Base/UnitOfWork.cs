@@ -16,7 +16,7 @@ namespace DataAccessLayer.Repository.Base
                 return repository;
             }
 
-            var newRepository = Activator.CreateInstance(typeof(GenericRepository<>).MakeGenericType(typeof(T)), _dbContext);
+            var newRepository = new GenericRepository<T>(_dbContext);
 
             if (newRepository == null)
                 throw new NullReferenceException("Repository should not be null");
