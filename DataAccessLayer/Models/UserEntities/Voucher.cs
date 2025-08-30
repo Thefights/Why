@@ -1,8 +1,9 @@
 ﻿using DataAccessLayer.Enums;
 using DataAccessLayer.Models.AbstractEntities;
+using DataAccessLayer.Models.OrderEntities;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.Models
+namespace DataAccessLayer.Models.UserEntities
 {
     public class Voucher : BaseEntity
     {

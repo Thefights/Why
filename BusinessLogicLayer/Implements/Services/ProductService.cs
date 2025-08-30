@@ -2,7 +2,7 @@
 using BusinessLogicLayer.DTO.ProductDTO;
 using BusinessLogicLayer.Implements.Base;
 using BusinessLogicLayer.Interfaces.Services;
-using DataAccessLayer.Models;
+using DataAccessLayer.Models.ProductEntities;
 using DataAccessLayer.Repository.IRepository.Base;
 using Microsoft.AspNetCore.Http;
 

@@ -1,6 +1,6 @@
 ﻿using BusinessLogicLayer.DTO.ProductDTO;
 using BusinessLogicLayer.Interfaces.Base;
-using DataAccessLayer.Models;
+using DataAccessLayer.Models.ProductEntities;
 using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Interfaces.Services

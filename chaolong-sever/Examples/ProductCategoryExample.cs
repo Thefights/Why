@@ -1,5 +1,4 @@
-﻿using DataAccessLayer.Models;
-using Swashbuckle.AspNetCore.Filters;
+﻿using Swashbuckle.AspNetCore.Filters;
 
 namespace chaolong_sever.Examples
 {

@@ -2,7 +2,7 @@
 using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.Implements.Base;
 using BusinessLogicLayer.Interfaces.Services;
-using DataAccessLayer.Models;
+using DataAccessLayer.Models.OrderEntities;
 using DataAccessLayer.Repository.IRepository.Base;
 
 namespace BusinessLogicLayer.Implements.Services

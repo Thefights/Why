@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.Interfaces.Services;
 using chaolong_sever.Controllers.Base;
-using DataAccessLayer.Models;
+using DataAccessLayer.Models.OrderEntities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chaolong_sever.Controllers.Manager

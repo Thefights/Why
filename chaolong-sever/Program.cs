@@ -28,7 +28,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 builder.Services.AddAWSService(builder.Configuration);
-builder.Services.AddExampleService(builder.Configuration);
+//builder.Services.AddExampleService(builder.Configuration);
 builder.Services.AddScopeService();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

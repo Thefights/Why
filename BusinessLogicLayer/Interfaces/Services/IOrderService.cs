@@ -1,6 +1,6 @@
 ﻿using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.Interfaces.Base;
-using DataAccessLayer.Models;
+using DataAccessLayer.Models.OrderEntities;
 
 namespace BusinessLogicLayer.Interfaces.Services
 {

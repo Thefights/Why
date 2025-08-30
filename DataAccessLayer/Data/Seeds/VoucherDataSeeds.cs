@@ -1,5 +1,4 @@
 ﻿using DataAccessLayer.Enums;
-using DataAccessLayer.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Data.Seeds
