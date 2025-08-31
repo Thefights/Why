@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Models;
+﻿using DataAccessLayer.Models.ProductEntities;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace DataAccessLayer.Examples

@@ -35,7 +35,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 
 var app = builder.Build();
-
+var secret = app.Configuration["AppSettings:Secret"];
 
 app.UseHttpsRedirection();
 

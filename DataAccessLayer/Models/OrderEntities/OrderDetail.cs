@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using DataAccessLayer.Models.ProductEntities;
+using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.Models
+namespace DataAccessLayer.Models.OrderEntities
 {
     public class OrderDetail
     {

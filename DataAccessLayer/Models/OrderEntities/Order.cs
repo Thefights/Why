@@ -1,8 +1,9 @@
 ﻿using DataAccessLayer.Enums;
 using DataAccessLayer.Models.AbstractEntities;
+using DataAccessLayer.Models.UserEntities;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.Models
+namespace DataAccessLayer.Models.OrderEntities
 {
     public class Order : BaseEntity
     {

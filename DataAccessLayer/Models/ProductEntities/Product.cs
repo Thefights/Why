@@ -1,8 +1,9 @@
 ﻿using DataAccessLayer.Models.AbstractEntities;
+using DataAccessLayer.Models.OrderEntities;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace DataAccessLayer.Models
+namespace DataAccessLayer.Models.ProductEntities
 {
     public class Product : ImageEntity
     {

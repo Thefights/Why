@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Models;
+﻿using DataAccessLayer.Models.ProductEntities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccessLayer.Data.Seeds

@@ -1,5 +1,5 @@
 ﻿using DataAccessLayer.Enums;
-using DataAccessLayer.Models;
+using DataAccessLayer.Models.UserEntities;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace chaolong_sever.Examples

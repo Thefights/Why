@@ -1,4 +1,4 @@
-﻿using DataAccessLayer.Models;
+﻿using DataAccessLayer.Models.OrderEntities;
 using Swashbuckle.AspNetCore.Filters;
 
 namespace chaolong_sever.Examples

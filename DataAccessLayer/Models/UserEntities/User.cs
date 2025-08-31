@@ -1,8 +1,9 @@
 ﻿using DataAccessLayer.Enums;
 using DataAccessLayer.Models.AbstractEntities;
+using DataAccessLayer.Models.OrderEntities;
 using System.ComponentModel.DataAnnotations;
 
-namespace DataAccessLayer.Models
+namespace DataAccessLayer.Models.UserEntities
 {
     public class User : ImageEntity
     {
@@ -25,5 +26,6 @@ namespace DataAccessLayer.Models
 
         public ICollection<UserVoucher> UserVouchers { get; set; } = [];
         public ICollection<Order> Orders { get; set; } = [];
+        public ICollection<RefreshToken> RefreshTokens { get; set; } = [];
     }
 }
