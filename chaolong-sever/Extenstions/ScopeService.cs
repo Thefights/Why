@@ -1,8 +1,6 @@
 ﻿using BusinessLogicLayer.Implements.Services;
-using BusinessLogicLayer.Interfaces.Services;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Repository.Base;
-using DataAccessLayer.Repository.IRepository.Base;
 
 namespace chaolong_sever.Extenstions
 {

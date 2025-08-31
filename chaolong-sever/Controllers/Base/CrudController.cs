@@ -1,6 +1,6 @@
 ﻿using BusinessLogicLayer.DTO.Abstract.Base;
 using BusinessLogicLayer.DTO.Abstract.ImageDTO;
-using BusinessLogicLayer.Interfaces.Base;
+using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models.AbstractEntities;
 using Microsoft.AspNetCore.Mvc;
 
