@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.Abstract.Base;
-using BusinessLogicLayer.Interfaces.Base;
 using BusinessLogicLayer.Interfaces.Services;
 using DataAccessLayer.Models.AbstractEntities;
 using DataAccessLayer.Repository.IRepository.Base;
@@ -8,6 +7,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Base
 {
+    public interface IRuService<GetDTO, UpdateDTO, T>
+    {
+        public Task<GetDTO> GetByIdAsync(int id);
+        public Task<IEnumerable<GetDTO>> GetAllAsync();
+        public Task UpdateAsync(UpdateDTO dto);
+        public Task UpdateWithImageAsync(UpdateDTO dto);
+    }
+
     public class RuService<GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, string[] _includes = null, IImageService? _imageService = null) : IRuService<GetDTO, UpdateDTO, T>
         where GetDTO : BaseDTO
         where UpdateDTO : BaseDTO

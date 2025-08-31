@@ -1,9 +1,12 @@
 ﻿using Amazon.S3;
-using BusinessLogicLayer.Interfaces.Services;
 using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Services
 {
+    public interface IImageService
+    {
+        public Task<string> UploadImageAsync(IFormFile file, string bucketName);
+    }
     public class ImageService(IAmazonS3 _s3Client) : IImageService
     {
         public async Task<string> UploadImageAsync(IFormFile _file, string _bucketName)

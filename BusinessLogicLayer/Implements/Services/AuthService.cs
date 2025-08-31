@@ -1,11 +1,17 @@
 ﻿using BusinessLogicLayer.DTO.UserDTO;
-using BusinessLogicLayer.Interfaces.Services;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Models.UserEntities;
 using DataAccessLayer.Repository.IRepository.Base;
 
 namespace BusinessLogicLayer.Implements.Services
 {
+    public interface IAuthService
+    {
+        public Task<User> RegisterAsync(string email, string password);
+        public Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password, string ipAddress);
+
+    }
+
     public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils) : IAuthService
     {
         public async Task<User> RegisterAsync(string email, string password)

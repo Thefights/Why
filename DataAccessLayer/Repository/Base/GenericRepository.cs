@@ -1,11 +1,21 @@
 ﻿using DataAccessLayer.Data;
 using DataAccessLayer.Models.AbstractEntities;
-using DataAccessLayer.Repository.IRepository.Base;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace DataAccessLayer.Repository.Base
 {
+    public interface IGenericRepository<T> where T : BaseEntity
+    {
+        public Task<List<T>> GetAllAsync(string[]? _include = null);
+        public Task<T?> GetByIdAsync(int id, string[]? _include = null);
+        public Task<T?> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include = null);
+        public Task<T> CreateAsync(T entity);
+        public T Update(T entity);
+        public void Delete(T entity);
+        public void DeleteRange(IEnumerable<T> entities);
+    }
+
     public class GenericRepository<T>(ApplicationDbContext _dbContext)
     : IGenericRepository<T>
        where T : BaseEntity
