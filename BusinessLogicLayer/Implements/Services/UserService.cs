@@ -1,6 +1,6 @@
-﻿using BusinessLogicLayer.Interfaces.Services;
-using DataAccessLayer.Models.UserEntities;
-using DataAccessLayer.Repository.IRepository.Base;
+﻿using DataAccessLayer.Models.UserEntities;
+using DataAccessLayer.Repository.Base;
+using static BusinessLogicLayer.Implements.Services.UserService;
 
 namespace BusinessLogicLayer.Implements.Services
 {

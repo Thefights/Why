@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.Abstract.Base;
-using BusinessLogicLayer.Interfaces.Services;
+using BusinessLogicLayer.Implements.Services;
 using DataAccessLayer.Models.AbstractEntities;
-using DataAccessLayer.Repository.IRepository.Base;
+using DataAccessLayer.Repository.Base;
 using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Base

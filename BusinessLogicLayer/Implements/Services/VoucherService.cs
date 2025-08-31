@@ -2,7 +2,7 @@
 using BusinessLogicLayer.DTO.VoucherDTO;
 using BusinessLogicLayer.Implements.Base;
 using DataAccessLayer.Models.UserEntities;
-using DataAccessLayer.Repository.IRepository.Base;
+using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services
 {

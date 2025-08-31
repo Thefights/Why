@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.DTO.UserDTO;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Models.UserEntities;
-using DataAccessLayer.Repository.IRepository.Base;
+using DataAccessLayer.Repository.Base;
 
 namespace BusinessLogicLayer.Implements.Services
 {
