@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.VoucherDTO;
 using BusinessLogicLayer.Implements.Base;
-using BusinessLogicLayer.Interfaces.Services;
 using DataAccessLayer.Models.UserEntities;
 using DataAccessLayer.Repository.IRepository.Base;
 
 namespace BusinessLogicLayer.Implements.Services
 {
+    public interface IVoucherService : ICrudService<VoucherCreateDTO, VoucherGetDTO, VoucherUpdateDTO, Voucher>
+    {
+    }
+
     public class VoucherService(IUnitOfWork _unitOfWork, IMapper _mapper) : CrudService<VoucherCreateDTO, VoucherGetDTO, VoucherUpdateDTO, Voucher>(_unitOfWork, _mapper), IVoucherService
     {
         //public async Task<Voucher> GetVoucherByCodeAsync(string code)

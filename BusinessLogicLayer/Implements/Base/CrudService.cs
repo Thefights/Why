@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.Abstract.Base;
-using BusinessLogicLayer.Interfaces.Base;
 using BusinessLogicLayer.Interfaces.Services;
 using DataAccessLayer.Models.AbstractEntities;
 using DataAccessLayer.Repository.IRepository.Base;
@@ -8,6 +7,17 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.Implements.Base
 {
+    public interface ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
+    {
+        public Task<GetDTO> GetByIdAsync(int id);
+        public Task<IEnumerable<GetDTO>> GetAllAsync();
+        public Task<CreateDTO> CreateAsync(CreateDTO dto);
+        public Task<CreateDTO> CreateWithImageAsync(CreateDTO dto);
+        public Task UpdateAsync(UpdateDTO dto);
+        public Task UpdateWithImageAsync(UpdateDTO dto);
+        public Task DeleteAsync(int id);
+    }
+
     public class CrudService<CreateDTO, GetDTO, UpdateDTO, T>(IUnitOfWork _unitOfWork, IMapper _mapper, IImageService? _imageService = null, string[] _includes = null) : ICrudService<CreateDTO, GetDTO, UpdateDTO, T>
         where CreateDTO : BaseDTO
         where GetDTO : BaseDTO
