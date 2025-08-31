@@ -17,9 +17,8 @@ namespace chaolong_sever.Extenstions
             _services.AddScoped<IOrderService, OrderService>();
             _services.AddScoped<IAuthService, AuthService>();
 
-            _services.AddScoped<JwtUtils>();
-            _services.AddScoped<CryptoUtil>();
-
+            _services.AddTransient<JwtUtils>();
+            _services.AddTransient<CryptoUtil>();
 
             return _services;
         }
