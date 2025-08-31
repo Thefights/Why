@@ -23,10 +23,10 @@ namespace DataAccessLayer.Repository.Base
         public async Task<T> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include)
         {
             var entity = await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(predicate);
-            if (entity == null)
-            {
-                throw new KeyNotFoundException("Entity not found.");
-            }
+            //if (entity == null)
+            //{
+            //    throw new KeyNotFoundException("Entity not found.");
+            //}
             return entity;
         }
 
@@ -45,6 +45,11 @@ namespace DataAccessLayer.Repository.Base
         public void Delete(T entity)
         {
             _dbContext.Set<T>().Remove(entity);
+        }
+
+        public void DeleteRange(IEnumerable<T> entities)
+        {
+            _dbContext.Set<T>().RemoveRange(entities);
         }
 
         private IQueryable<T> ApplyIncludes(IQueryable<T> query, string[]? _includes)

@@ -1,4 +1,4 @@
-﻿namespace chaolong_sever.Helpers
+﻿namespace BusinessLogicLayer.Helpers
 {
     public class AppSettings
     {

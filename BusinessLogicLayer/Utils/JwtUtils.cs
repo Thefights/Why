@@ -1,4 +1,4 @@
-﻿using chaolong_sever.Helpers;
+﻿using BusinessLogicLayer.Helpers;
 using DataAccessLayer.Data;
 using DataAccessLayer.Models.UserEntities;
 using Microsoft.Extensions.Options;
@@ -8,7 +8,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace chaolong_sever.Authorization
+namespace BusinessLogicLayer.Utils
 {
     public interface IJwtUtils
     {
@@ -23,10 +23,15 @@ namespace chaolong_sever.Authorization
         {
             // generate token that is valid for 15 minutes
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
-                Subject = new ClaimsIdentity(new[] { new Claim("id", user.Id.ToString()) }),
+                Subject = new ClaimsIdentity(new[] {
+                    new Claim("id", user.Id.ToString()),
+                    new Claim(ClaimTypes.Role, user.Role.ToString()),
+                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Email, user.Email)
+                }),
                 Expires = DateTime.UtcNow.AddMinutes(15),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
@@ -40,7 +45,7 @@ namespace chaolong_sever.Authorization
                 return null;
 
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_appSettings.Secret);
+            var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
             try
             {
                 tokenHandler.ValidateToken(token, new TokenValidationParameters

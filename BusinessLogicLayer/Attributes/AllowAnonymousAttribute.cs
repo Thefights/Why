@@ -1,4 +1,4 @@
-﻿namespace chaolong_sever.Authorization
+﻿namespace BusinessLogicLayer.Attributes
 {
     [AttributeUsage(AttributeTargets.Method)]
     public class AllowAnonymousAttribute : Attribute

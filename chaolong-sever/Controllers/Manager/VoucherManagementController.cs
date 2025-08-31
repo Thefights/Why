@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLayer.DTO.VoucherDTO;
 using BusinessLogicLayer.Interfaces.Services;
 using chaolong_sever.Controllers.Base;
+using DataAccessLayer.Models.UserEntities;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chaolong_sever.Controllers.Manager

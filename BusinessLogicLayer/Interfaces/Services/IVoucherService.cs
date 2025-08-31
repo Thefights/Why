@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.DTO.VoucherDTO;
 using BusinessLogicLayer.Interfaces.Base;
+using DataAccessLayer.Models.UserEntities;
 
 namespace BusinessLogicLayer.Interfaces.Services
 {

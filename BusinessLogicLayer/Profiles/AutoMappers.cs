@@ -5,6 +5,7 @@ using BusinessLogicLayer.DTO.ProductDTO;
 using BusinessLogicLayer.DTO.VoucherDTO;
 using DataAccessLayer.Models.OrderEntities;
 using DataAccessLayer.Models.ProductEntities;
+using DataAccessLayer.Models.UserEntities;
 
 namespace BusinessLogicLayer.Profiles
 {
