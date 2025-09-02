@@ -9,17 +9,10 @@ using System.Text;
 
 namespace BusinessLogicLayer.Utils
 {
-    public interface IJwtUtils
-    {
-        public string GenerateJwtToken(User user);
-        public int? ValidateJwtToken(string token);
-    }
-
-    public class JwtUtils(ApplicationDbContext _context, IOptions<AppSettings> _appSettings) : IJwtUtils
+    public class JwtUtils(ApplicationDbContext _context, IOptions<AppSettings> _appSettings)
     {
         public string GenerateJwtToken(User user)
         {
-            // generate token that is valid for 15 minutes
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -30,7 +23,7 @@ namespace BusinessLogicLayer.Utils
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

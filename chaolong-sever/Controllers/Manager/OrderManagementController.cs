@@ -9,7 +9,7 @@ namespace chaolong_sever.Controllers.Manager
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class OrderManagementController(IOrderService _orderService) : RuController<OrderGetDTO, OrderUpdateDTO, Order>(_orderService)
     {
     }

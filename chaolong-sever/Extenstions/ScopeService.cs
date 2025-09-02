@@ -1,6 +1,7 @@
 ﻿using BusinessLogicLayer.Implements.Services;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Repository.Base;
+using static BusinessLogicLayer.Implements.Services.UserService;
 
 namespace chaolong_sever.Extenstions
 {
@@ -13,12 +14,12 @@ namespace chaolong_sever.Extenstions
             _services.AddScoped<IImageService, ImageService>();
             _services.AddScoped<IProductService, ProductService>();
             _services.AddScoped<IVoucherService, VoucherService>();
-            //_services.AddScoped<IUserService, UserService>();
+            _services.AddScoped<IUserService, UserService>();
             _services.AddScoped<IOrderService, OrderService>();
             _services.AddScoped<IAuthService, AuthService>();
 
-            _services.AddTransient<JwtUtils>();
-            _services.AddTransient<CryptoUtil>();
+            _services.AddScoped<JwtUtils>();
+            _services.AddScoped<CryptoUtil>();
 
             return _services;
         }

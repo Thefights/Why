@@ -1,6 +1,9 @@
-﻿using chaolong_sever.Extenstions;
+﻿using BusinessLogicLayer.Helpers;
+using chaolong_sever.Authorization;
+using chaolong_sever.Extenstions;
 using DataAccessLayer.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
 
@@ -25,6 +28,30 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddSwaggerGen(c =>
 {
     c.ExampleFilters();
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Chao Long API", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        Description = "Nhập token theo dạng: Bearer {token}"
+    });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                }
+            },
+            new string[] {}
+        }
+});
 });
 
 builder.Services.AddAWSService(builder.Configuration);
@@ -33,9 +60,15 @@ builder.Services.AddScopeService();
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
+builder.Services.Configure<AppSettings>(
+    builder.Configuration.GetSection("AppSettings"));
+
 
 var app = builder.Build();
 var secret = app.Configuration["AppSettings:Secret"];
+
+app.UseMiddleware<JwtMiddleware>();
+app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
@@ -49,7 +82,9 @@ app.UseSwaggerUI(c =>
 });
 
 
+app.UseAuthentication();
 app.UseAuthorization();
+
 
 app.MapControllers();
 

@@ -47,8 +47,6 @@ namespace BusinessLogicLayer.Implements.Services
 
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
 
-            await _unitOfWork.SaveChangesAsync();
-
             return new AuthUserRespondDTO(user, jwtToken);
         }
 
