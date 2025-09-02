@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -51,6 +51,7 @@ import {
 import { Plus, Edit, Trash2 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import Image from "next/image";
+import { fetchProducts } from "@/app/apis/product-api";
 
 interface Product {
   id: string;

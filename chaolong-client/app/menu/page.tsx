@@ -1,5 +1,9 @@
+"use client";
+
 import { Navigation } from "@/components/navigation";
 import { MenuSection } from "@/components/menu-section";
+import { fetchProducts } from "../apis/product-api";
+import { useEffect, useState } from "react";
 
 const porridgeItems = [
   {
@@ -93,6 +97,18 @@ const beverages = [
 ];
 
 export default function MenuPage() {
+  const [menu, setMenu] = useState([]);
+
+  useEffect(() => {
+    fetchProducts()
+      .then((response) => {
+        console.log("API response:", response.data); // kiểm tra data trả về
+        setMenu(response.data); // cập nhật state với data từ API
+      })
+      .catch((err) => console.error("Fetch error:", err));
+    // .finally(() => setLoading(false));
+  }, []);
+
   return (
     <main className="min-h-screen bg-background">
       <Navigation />

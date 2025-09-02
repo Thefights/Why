@@ -8,6 +8,7 @@ using Swashbuckle.AspNetCore.Filters;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
+var QuachKhangOrigin = "QuachKhangPolicy";
 
 // Add services to the container.
 
@@ -63,12 +64,26 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.Configure<AppSettings>(
     builder.Configuration.GetSection("AppSettings"));
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: QuachKhangOrigin,
+                      policy =>
+                      {
+                          policy.WithOrigins("http://localhost:3000")
+                                .AllowAnyMethod()
+                                .AllowAnyHeader()
+                                .AllowCredentials();
+                      });
+});
+
 
 var app = builder.Build();
 var secret = app.Configuration["AppSettings:Secret"];
 
 app.UseMiddleware<JwtMiddleware>();
 app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseCors(QuachKhangOrigin);
 
 app.UseHttpsRedirection();
 
