@@ -7,7 +7,7 @@ namespace BusinessLogicLayer.Helpers
 {
     public class ErrorHandlerMiddleware(RequestDelegate _next)
     {
-        public async Task Invoke(HttpContext context)
+        public async Task InvokeAsync(HttpContext context)
         {
             try
             {
