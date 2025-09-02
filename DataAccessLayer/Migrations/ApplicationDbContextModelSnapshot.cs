@@ -22,7 +22,7 @@ namespace DataAccessLayer.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DataAccessLayer.Models.Order", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.OrderEntities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -73,7 +73,7 @@ namespace DataAccessLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.OrderDetail", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.OrderEntities.OrderDetail", b =>
                 {
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
@@ -115,7 +115,7 @@ namespace DataAccessLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Product", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.ProductEntities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,7 +128,6 @@ namespace DataAccessLayer.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
@@ -203,7 +202,7 @@ namespace DataAccessLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.ProductCategory", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.ProductEntities.ProductCategory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -238,7 +237,43 @@ namespace DataAccessLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.User", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedByIp")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReplacedByToken")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshToken");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -247,10 +282,6 @@ namespace DataAccessLayer.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ImageUrl")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -278,7 +309,6 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = 1,
                             Email = "admin@chaoshop.com",
-                            ImageUrl = "/images/admin.png",
                             Name = "Admin",
                             Password = "hashed_admin",
                             Phone = "0123456789",
@@ -288,7 +318,6 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = 2,
                             Email = "david@chaoshop.com",
-                            ImageUrl = "/images/customer1.png",
                             Name = "David Nguyen",
                             Password = "hashed_david",
                             Phone = "0987654321",
@@ -298,7 +327,6 @@ namespace DataAccessLayer.Migrations
                         {
                             Id = 3,
                             Email = "lisa@chaoshop.com",
-                            ImageUrl = "/images/customer2.png",
                             Name = "Lisa Tran",
                             Password = "hashed_lisa",
                             Phone = "0977777777",
@@ -306,7 +334,7 @@ namespace DataAccessLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.UserVoucher", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.UserVoucher", b =>
                 {
                     b.Property<int>("UserId")
                         .HasColumnType("int");
@@ -324,7 +352,7 @@ namespace DataAccessLayer.Migrations
                     b.ToTable("UserVouchers");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Voucher", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.Voucher", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -385,15 +413,15 @@ namespace DataAccessLayer.Migrations
                         });
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Order", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.OrderEntities.Order", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.User", "User")
+                    b.HasOne("DataAccessLayer.Models.UserEntities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.Voucher", "Voucher")
+                    b.HasOne("DataAccessLayer.Models.UserEntities.Voucher", "Voucher")
                         .WithMany("Orders")
                         .HasForeignKey("VoucherId");
 
@@ -402,15 +430,15 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Voucher");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.OrderDetail", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.OrderEntities.OrderDetail", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.Order", "Order")
+                    b.HasOne("DataAccessLayer.Models.OrderEntities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.Product", "Product")
+                    b.HasOne("DataAccessLayer.Models.ProductEntities.Product", "Product")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -421,9 +449,9 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Product", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.ProductEntities.Product", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.ProductCategory", "ProductCategory")
+                    b.HasOne("DataAccessLayer.Models.ProductEntities.ProductCategory", "ProductCategory")
                         .WithMany("Products")
                         .HasForeignKey("ProductCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -432,15 +460,26 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("ProductCategory");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.UserVoucher", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.RefreshToken", b =>
                 {
-                    b.HasOne("DataAccessLayer.Models.User", "User")
+                    b.HasOne("DataAccessLayer.Models.UserEntities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.UserVoucher", b =>
+                {
+                    b.HasOne("DataAccessLayer.Models.UserEntities.User", "User")
                         .WithMany("UserVouchers")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("DataAccessLayer.Models.Voucher", "Voucher")
+                    b.HasOne("DataAccessLayer.Models.UserEntities.Voucher", "Voucher")
                         .WithMany("UserVouchers")
                         .HasForeignKey("VoucherId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -451,29 +490,31 @@ namespace DataAccessLayer.Migrations
                     b.Navigation("Voucher");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Order", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.OrderEntities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Product", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.ProductEntities.Product", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.ProductCategory", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.ProductEntities.ProductCategory", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.User", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.User", b =>
                 {
                     b.Navigation("Orders");
+
+                    b.Navigation("RefreshTokens");
 
                     b.Navigation("UserVouchers");
                 });
 
-            modelBuilder.Entity("DataAccessLayer.Models.Voucher", b =>
+            modelBuilder.Entity("DataAccessLayer.Models.UserEntities.Voucher", b =>
                 {
                     b.Navigation("Orders");
 

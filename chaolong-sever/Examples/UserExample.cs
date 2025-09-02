@@ -16,7 +16,6 @@ namespace chaolong_sever.Examples
                 Email = "phuckhang1088@gmail.com",
                 Role = UserRoleEnum.Customer,
                 Password = "hehe",
-                ImageUrl = "/images/user1.png"
             };
         }
     }
