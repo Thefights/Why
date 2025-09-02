@@ -1,4 +1,5 @@
-﻿using BusinessLogicLayer.DTO.OrderDTO;
+﻿using BusinessLogicLayer.Attributes;
+using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.Implements.Services;
 using chaolong_sever.Controllers.Base;
 using DataAccessLayer.Models.OrderEntities;
@@ -8,6 +9,7 @@ namespace chaolong_sever.Controllers.Manager
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
     public class OrderManagementController(IOrderService _orderService) : RuController<OrderGetDTO, OrderUpdateDTO, Order>(_orderService)
     {
     }

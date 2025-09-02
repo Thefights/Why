@@ -1,19 +1,21 @@
 ﻿using AutoMapper;
 using BusinessLogicLayer.DTO.UserDTO;
+using BusinessLogicLayer.Helpers;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Models.UserEntities;
 using DataAccessLayer.Repository.Base;
+using Microsoft.Extensions.Options;
 
 namespace BusinessLogicLayer.Implements.Services
 {
     public interface IAuthService
     {
         public Task<User> RegisterAsync(AuthUserRequestDTO dto);
-        public Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password, string ipAddress);
+        public Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password);
 
     }
 
-    public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils, IMapper _mapper) : IAuthService
+    public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils, IMapper _mapper, IOptions<AppSettings> _appSettings) : IAuthService
     {
         public async Task<User> RegisterAsync(AuthUserRequestDTO dto)
         {
@@ -35,7 +37,7 @@ namespace BusinessLogicLayer.Implements.Services
             return entity;
         }
 
-        public async Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password, string ipAddress)
+        public async Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password)
         {
             var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == email);
             if (user == null || !CryptoUtil.IsPasswordCorrect(password, user.Password))
@@ -44,23 +46,8 @@ namespace BusinessLogicLayer.Implements.Services
             }
 
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
-            var refreshToken = _jwtUtils.GenerateRefreshToken(ipAddress);
-            user.RefreshTokens.Add(refreshToken);
 
-            //remove old refresh tokens from user
-            RemoveOldRefreshTokens(user);
-            await _unitOfWork.SaveChangesAsync();
-
-            return new AuthUserRespondDTO(user, jwtToken, refreshToken.Token);
-        }
-
-        private void RemoveOldRefreshTokens(User user)
-        {
-            var oldTokens = user.RefreshTokens.Where(x =>
-                !x.IsActive &&
-                x.Created.AddDays(7) <= DateTime.UtcNow).ToList();
-
-            _unitOfWork.Repository<RefreshToken>().DeleteRange(oldTokens);
+            return new AuthUserRespondDTO(user, jwtToken);
         }
 
         private async Task<User?> GetUserByEmailAsync(string email)

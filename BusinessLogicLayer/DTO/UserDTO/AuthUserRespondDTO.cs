@@ -10,15 +10,13 @@ namespace BusinessLogicLayer.DTO.UserDTO
         public string Role { get; set; } = string.Empty;
 
         public string AccessToken { get; set; } = string.Empty;
-        public string RefreshToken { get; set; } = string.Empty;
 
-        public AuthUserRespondDTO(User user, string jwtToken, string refreshToken)
+        public AuthUserRespondDTO(User user, string jwtToken)
         {
             Id = user.Id;
             Email = user.Email;
             Name = user.Name;
             AccessToken = jwtToken;
-            RefreshToken = refreshToken;
         }
     }
 }

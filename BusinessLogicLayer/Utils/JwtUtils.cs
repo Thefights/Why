@@ -5,23 +5,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace BusinessLogicLayer.Utils
 {
-    public interface IJwtUtils
-    {
-        public string GenerateJwtToken(User user);
-        public int? ValidateJwtToken(string token);
-        public RefreshToken GenerateRefreshToken(string ipAddress);
-    }
-
-    public class JwtUtils(ApplicationDbContext _context, IOptions<AppSettings> _appSettings) : IJwtUtils
+    public class JwtUtils(ApplicationDbContext _context, IOptions<AppSettings> _appSettings)
     {
         public string GenerateJwtToken(User user)
         {
-            // generate token that is valid for 15 minutes
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_appSettings.Value.Secret);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -32,7 +23,7 @@ namespace BusinessLogicLayer.Utils
                     new Claim(ClaimTypes.Name, user.Name),
                     new Claim(ClaimTypes.Email, user.Email)
                 }),
-                Expires = DateTime.UtcNow.AddMinutes(15),
+                Expires = DateTime.UtcNow.AddDays(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -68,33 +59,6 @@ namespace BusinessLogicLayer.Utils
             {
                 // return null if validation fails
                 return null;
-            }
-        }
-
-        public RefreshToken GenerateRefreshToken(string ipAddress)
-        {
-            var refreshToken = new RefreshToken
-            {
-                Token = getUniqueToken(),
-                // token is valid for 7 days
-                Expires = DateTime.UtcNow.AddDays(7),
-                Created = DateTime.UtcNow,
-                CreatedByIp = ipAddress
-            };
-
-            return refreshToken;
-
-            string getUniqueToken()
-            {
-                // token is a cryptographically strong random sequence of values
-                var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-                // ensure token is unique by checking against db
-                var tokenIsUnique = !_context.Users.Any(u => u.RefreshTokens.Any(t => t.Token == token));
-
-                if (!tokenIsUnique)
-                    return getUniqueToken();
-
-                return token;
             }
         }
     }
