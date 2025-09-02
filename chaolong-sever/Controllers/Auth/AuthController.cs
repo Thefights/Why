@@ -1,4 +1,5 @@
 ﻿using BusinessLogicLayer.Attributes;
+using BusinessLogicLayer.DTO.UserDTO;
 using BusinessLogicLayer.Implements.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,9 +11,9 @@ namespace chaolong_sever.Controllers.Auth
     {
         [AllowAnonymous]
         [HttpPost("register")]
-        public async Task<IActionResult> Register(string email, string password)
+        public async Task<IActionResult> Register(AuthUserRequestDTO dto)
         {
-            var user = await _authService.RegisterAsync(email, password);
+            var user = await _authService.RegisterAsync(dto);
             return Ok(user);
         }
 

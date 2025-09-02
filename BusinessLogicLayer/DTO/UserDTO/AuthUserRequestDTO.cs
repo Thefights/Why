@@ -1,11 +1,11 @@
-﻿using DataAccessLayer.Enums;
-using DataAccessLayer.Models.AbstractEntities;
-using DataAccessLayer.Models.OrderEntities;
+﻿using BusinessLogicLayer.DTO.Abstract.Base;
+using DataAccessLayer.Enums;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
-namespace DataAccessLayer.Models.UserEntities
+namespace BusinessLogicLayer.DTO.UserDTO
 {
-    public class User : BaseEntity
+    public class AuthUserRequestDTO : BaseDTO
     {
         [Required]
         public string Name { get; set; } = string.Empty;
@@ -19,13 +19,9 @@ namespace DataAccessLayer.Models.UserEntities
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        public UserRoleEnum Role { get; set; }
-
-        [Required]
         public string Password { get; set; } = string.Empty;
 
-        public ICollection<UserVoucher> UserVouchers { get; set; } = [];
-        public ICollection<Order> Orders { get; set; } = [];
-        public ICollection<RefreshToken> RefreshTokens { get; set; } = [];
+        [JsonIgnore]
+        public UserRoleEnum Role { get; set; } = UserRoleEnum.Customer;
     }
 }

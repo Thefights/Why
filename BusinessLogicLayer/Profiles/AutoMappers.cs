@@ -2,6 +2,7 @@
 using BusinessLogicLayer.DTO.OrderDetailDTO;
 using BusinessLogicLayer.DTO.OrderDTO;
 using BusinessLogicLayer.DTO.ProductDTO;
+using BusinessLogicLayer.DTO.UserDTO;
 using BusinessLogicLayer.DTO.VoucherDTO;
 using DataAccessLayer.Models.OrderEntities;
 using DataAccessLayer.Models.ProductEntities;
@@ -29,6 +30,10 @@ namespace BusinessLogicLayer.Profiles
 
             //OrderDetail
             CreateMap<OrderDetail, OrderDetailGetDTO>().ReverseMap();
+
+            //User
+            CreateMap<User, AuthUserRequestDTO>().ReverseMap();
+            //CreateMap<User, AuthUserRespondDTO>().ReverseMap();
         }
     }
 }
