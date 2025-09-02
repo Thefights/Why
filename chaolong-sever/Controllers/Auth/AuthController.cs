@@ -24,5 +24,15 @@ namespace chaolong_sever.Controllers.Auth
             var authResponse = await _authService.AuthenticateAsync(email, password);
             return Ok(authResponse);
         }
+
+        [HttpPost("refresh-token")]
+        public async Task<ActionResult> RefreshToken(string refreshToken)
+        {
+            var result = await _authService.RefreshTokenAsync(refreshToken);
+            if (result is null || result.AccessToken is null || result.RefreshToken is null)
+                return Unauthorized("Invalid refresh token.");
+
+            return Ok(result);
+        }
     }
 }

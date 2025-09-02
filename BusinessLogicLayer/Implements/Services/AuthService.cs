@@ -12,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
     {
         public Task<User> RegisterAsync(AuthUserRequestDTO dto);
         public Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password);
-
+        public Task<AuthUserRespondDTO> RefreshTokenAsync(string refreshToken);
     }
 
     public class AuthService(IUnitOfWork _unitOfWork, JwtUtils _jwtUtils, IMapper _mapper, IOptions<AppSettings> _appSettings) : IAuthService
@@ -24,7 +24,7 @@ namespace BusinessLogicLayer.Implements.Services
 
             if (existingUser != null)
             {
-                throw new Exception("User already exists.");
+                throw new AppException("User already exists.");
             }
 
             var entity = _mapper.Map<User>(dto);
@@ -42,12 +42,33 @@ namespace BusinessLogicLayer.Implements.Services
             var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == email);
             if (user == null || !CryptoUtil.IsPasswordCorrect(password, user.Password))
             {
-                throw new Exception("Email or password is incorrect.");
+                throw new AppException("Email or password is incorrect.");
             }
 
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
+            var refreshToken = _jwtUtils.GenerateRefreshToken();
 
-            return new AuthUserRespondDTO(user, jwtToken);
+            user.RefreshToken = refreshToken;
+            user.RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(30);
+
+            _unitOfWork.Repository<User>().Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new AuthUserRespondDTO(user, jwtToken, refreshToken);
+        }
+
+        public async Task<AuthUserRespondDTO> RefreshTokenAsync(string refreshToken)
+        {
+            var isValidRefreshToken = await IsRefreshTokenValid(refreshToken);
+
+            var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.RefreshToken == refreshToken);
+
+            if (!isValidRefreshToken)
+                throw new AppException("Invalid refresh token.");
+
+            var jwtToken = _jwtUtils.GenerateJwtToken(user);
+
+            return new AuthUserRespondDTO(user, jwtToken, refreshToken);
         }
 
         private async Task<User?> GetUserByEmailAsync(string email)
@@ -55,6 +76,15 @@ namespace BusinessLogicLayer.Implements.Services
             var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == email);
 
             return user;
+        }
+
+        private async Task<bool> IsRefreshTokenValid(string refreshToken)
+        {
+            var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.RefreshToken == refreshToken);
+
+            if (user != null && user.RefreshTokenExpiryTime >= DateTime.UtcNow) return true;
+
+            return false;
         }
     }
 }

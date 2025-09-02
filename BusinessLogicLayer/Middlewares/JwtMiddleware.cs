@@ -11,7 +11,7 @@ namespace chaolong_sever.Authorization
     {
         public async Task InvokeAsync(HttpContext context, IUserService _userService, JwtUtils jwtUtils)
         {
-            var token = context.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
+            var token = context.Request.Headers["Authorization"].FirstOrDefault();
             var userId = jwtUtils.ValidateJwtToken(token);
             if (userId != null)
             {
