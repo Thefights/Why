@@ -1,8 +1,8 @@
 ﻿using BusinessLogicLayer.Helpers;
-using BusinessLogicLayer.Interfaces.Services;
 using BusinessLogicLayer.Utils;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using static BusinessLogicLayer.Implements.Services.UserService;
 
 namespace chaolong_sever.Authorization
 {

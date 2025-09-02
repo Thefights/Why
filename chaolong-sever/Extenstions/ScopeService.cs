@@ -1,8 +1,6 @@
 ﻿using BusinessLogicLayer.Implements.Services;
-using BusinessLogicLayer.Interfaces.Services;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Repository.Base;
-using DataAccessLayer.Repository.IRepository.Base;
 
 namespace chaolong_sever.Extenstions
 {
@@ -19,9 +17,8 @@ namespace chaolong_sever.Extenstions
             _services.AddScoped<IOrderService, OrderService>();
             _services.AddScoped<IAuthService, AuthService>();
 
-            _services.AddScoped<JwtUtils>();
-            _services.AddScoped<CryptoUtil>();
-
+            _services.AddTransient<JwtUtils>();
+            _services.AddTransient<CryptoUtil>();
 
             return _services;
         }

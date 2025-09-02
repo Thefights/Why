@@ -27,16 +27,18 @@ namespace DataAccessLayer.Repository.Base
 
         public async Task<T?> GetByIdAsync(int id, string[]? _include)
         {
-            return await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(e => e.Id == id);
+            if (_include != null)
+            {
+                return await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(e => e.Id == id);
+            }
+
+            return await _dbContext.Set<T>().FindAsync(id);
         }
 
         public async Task<T> GetByCondition(Expression<Func<T, bool>> predicate, string[]? _include)
         {
             var entity = await ApplyIncludes(_dbContext.Set<T>(), _include).FirstOrDefaultAsync(predicate);
-            //if (entity == null)
-            //{
-            //    throw new KeyNotFoundException("Entity not found.");
-            //}
+
             return entity;
         }
 
@@ -57,6 +59,7 @@ namespace DataAccessLayer.Repository.Base
             _dbContext.Set<T>().Remove(entity);
         }
 
+        //Khi ma GetAll thang entity roi thi no tra ve list hay array
         public void DeleteRange(IEnumerable<T> entities)
         {
             _dbContext.Set<T>().RemoveRange(entities);

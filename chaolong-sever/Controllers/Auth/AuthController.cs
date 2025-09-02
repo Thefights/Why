@@ -1,5 +1,5 @@
 ﻿using BusinessLogicLayer.Attributes;
-using BusinessLogicLayer.Interfaces.Services;
+using BusinessLogicLayer.Implements.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace chaolong_sever.Controllers.Auth
