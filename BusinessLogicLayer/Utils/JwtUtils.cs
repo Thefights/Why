@@ -5,7 +5,6 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 
 namespace BusinessLogicLayer.Utils
@@ -14,7 +13,6 @@ namespace BusinessLogicLayer.Utils
     {
         public string GenerateJwtToken(User user);
         public int? ValidateJwtToken(string token);
-        public RefreshToken GenerateRefreshToken(string ipAddress);
     }
 
     public class JwtUtils(ApplicationDbContext _context, IOptions<AppSettings> _appSettings) : IJwtUtils
@@ -68,33 +66,6 @@ namespace BusinessLogicLayer.Utils
             {
                 // return null if validation fails
                 return null;
-            }
-        }
-
-        public RefreshToken GenerateRefreshToken(string ipAddress)
-        {
-            var refreshToken = new RefreshToken
-            {
-                Token = getUniqueToken(),
-                // token is valid for 7 days
-                Expires = DateTime.UtcNow.AddDays(7),
-                Created = DateTime.UtcNow,
-                CreatedByIp = ipAddress
-            };
-
-            return refreshToken;
-
-            string getUniqueToken()
-            {
-                // token is a cryptographically strong random sequence of values
-                var token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
-                // ensure token is unique by checking against db
-                var tokenIsUnique = !_context.Users.Any(u => u.RefreshTokens.Any(t => t.Token == token));
-
-                if (!tokenIsUnique)
-                    return getUniqueToken();
-
-                return token;
             }
         }
     }

@@ -19,9 +19,9 @@ namespace chaolong_sever.Controllers.Auth
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(string email, string password, string ipAddress)
+        public async Task<IActionResult> Authenticate(string email, string password)
         {
-            var authResponse = await _authService.AuthenticateAsync(email, password, ipAddress);
+            var authResponse = await _authService.AuthenticateAsync(email, password);
             return Ok(authResponse);
         }
     }

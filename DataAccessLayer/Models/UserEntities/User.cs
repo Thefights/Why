@@ -26,6 +26,5 @@ namespace DataAccessLayer.Models.UserEntities
 
         public ICollection<UserVoucher> UserVouchers { get; set; } = [];
         public ICollection<Order> Orders { get; set; } = [];
-        public ICollection<RefreshToken> RefreshTokens { get; set; } = [];
     }
 }
