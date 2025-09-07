@@ -1,5 +1,4 @@
 ﻿using BusinessLogicLayer.DTO.Abstract.Base;
-using System.ComponentModel.DataAnnotations;
 
 namespace BusinessLogicLayer.DTO.OrderDetailDTO
 {
@@ -13,7 +12,6 @@ namespace BusinessLogicLayer.DTO.OrderDetailDTO
 
         public int OrderId { get; set; }
 
-        [Required]
         public int ProductId { get; set; }
     }
 }

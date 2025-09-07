@@ -19,7 +19,7 @@ namespace BusinessLogicLayer.Implements.Services
         {
             if (imageFile != null && imageFile.Length > 0)
             {
-                var imageUrlResult = await _imageService.UploadImageAsync(imageFile, "test-bucketname-thefight");
+                var imageUrlResult = await _imageService.UploadImageAsync(imageFile, "chaolong-bucket");
                 product.ImageUrl = imageUrlResult;
             }
 
