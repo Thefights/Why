@@ -3,7 +3,7 @@ using DataAccessLayer.Enums;
 
 namespace BusinessLogicLayer.DTO.OrderDTO
 {
-    public class OrderUpdateDTO : BaseWithIdDTO
+    public class OrderUpdateDTO : BaseDTO
     {
         public DateTime OrderDate { get; set; }
 

@@ -3,7 +3,7 @@ using DataAccessLayer.Enums;
 
 namespace BusinessLogicLayer.DTO.VoucherDTO
 {
-    public class VoucherUpdateDTO : BaseWithIdDTO
+    public class VoucherUpdateDTO : BaseDTO
     {
         public string Name { get; set; } = string.Empty;
 

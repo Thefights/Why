@@ -2,7 +2,7 @@
 
 namespace BusinessLogicLayer.DTO.Abstract.ImageDTO
 {
-    public abstract class GetImageDTO : BaseWithIdDTO
+    public abstract class GetImageDTO : BaseDTO
     {
         public string ImageUrl { get; set; } = string.Empty;
     }

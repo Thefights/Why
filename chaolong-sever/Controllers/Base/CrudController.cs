@@ -9,8 +9,8 @@ namespace chaolong_sever.Controllers.Base
     [ApiController]
     public abstract class CrudController<CreateDTO, UpdateDTO, GetDTO, T>(ICrudService<CreateDTO, GetDTO, UpdateDTO, T> _crudService) : ControllerBase
         where CreateDTO : BaseDTO
-        where GetDTO : BaseWithIdDTO
-        where UpdateDTO : BaseWithIdDTO
+        where GetDTO : BaseDTO
+        where UpdateDTO : BaseDTO
         where T : BaseEntity
     {
         [HttpGet]
@@ -42,7 +42,7 @@ namespace chaolong_sever.Controllers.Base
             return Ok(new { Message = "Create new record successfully", Data = dto });
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public virtual async Task<IActionResult> UpdateAsync([FromForm] UpdateDTO dto)
         {
             if (dto == null)
