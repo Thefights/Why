@@ -9,8 +9,8 @@ namespace chaolong_sever.Controllers.Base
     [Route("api/[controller]")]
     [ApiController]
     public class RuController<GetDTO, UpdateDTO, T>(IRuService<GetDTO, UpdateDTO, T> _crudService) : ControllerBase
-        where GetDTO : BaseWithIdDTO
-        where UpdateDTO : BaseWithIdDTO
+        where GetDTO : BaseDTO
+        where UpdateDTO : BaseDTO
         where T : BaseEntity
     {
         [HttpGet]

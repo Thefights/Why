@@ -40,6 +40,7 @@ namespace BusinessLogicLayer.Implements.Services
         public async Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password)
         {
             var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == email);
+
             if (user == null || !CryptoUtil.IsPasswordCorrect(password, user.Password))
             {
                 throw new AppException("Email or password is incorrect.");

@@ -4,7 +4,7 @@ using DataAccessLayer.Enums;
 
 namespace BusinessLogicLayer.DTO.OrderDTO
 {
-    public class OrderGetDTO : BaseWithIdDTO
+    public class OrderGetDTO : BaseDTO
     {
         public DateTime OrderDate { get; set; }
 

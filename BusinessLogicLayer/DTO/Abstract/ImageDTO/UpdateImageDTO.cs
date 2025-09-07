@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace BusinessLogicLayer.DTO.Abstract.ImageDTO
 {
-    public abstract class UpdateImageDTO : BaseWithIdDTO
+    public abstract class UpdateImageDTO : BaseDTO
     {
         public IFormFile ImageFile { get; set; }
     }
