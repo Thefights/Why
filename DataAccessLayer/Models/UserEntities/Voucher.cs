@@ -2,32 +2,30 @@
 using DataAccessLayer.Models.AbstractEntities;
 using DataAccessLayer.Models.OrderEntities;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DataAccessLayer.Models.UserEntities
 {
     public class Voucher : BaseEntity
     {
-        [Required]
+        [Column(TypeName = "VARCHAR")]
+        [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
 
-        [Required]
-        [Range(0, int.MaxValue, ErrorMessage = "Quantity must be a non-negative value")]
         public int Quantity { get; set; }
 
-        [Required]
+        [Column(TypeName = "VARCHAR")]
+        [MaxLength(1000)]
         public string Description { get; set; } = string.Empty;
 
-        [Required]
+        [Column(TypeName = "VARCHAR")]
+        [MaxLength(50)]
         public string Code { get; set; } = string.Empty;
 
-        [Required]
-        [Range(0.0, double.MaxValue, ErrorMessage = "Discount must be a non-negative value")]
         public double DiscountAmount { get; set; }
 
-        [Required]
         public DateTime ExpiryDate { get; set; }
 
-        [Required]
         public VoucherStatusEnum Status { get; set; }
 
         public ICollection<Order> Orders { get; set; } = [];

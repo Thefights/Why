@@ -8,14 +8,15 @@ namespace BusinessLogicLayer.DTO.UserDTO
     public class AuthUserRequestDTO : BaseDTO
     {
         [Required]
+        [StringLength(50, MinimumLength = 2, ErrorMessage = "{0} must be between {2} and {1} characters long.")]
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        [Phone(ErrorMessage = "Invalid Phone Number")]
+        [Phone(ErrorMessage = "Invalid {0}")]
         public string Phone { get; set; } = string.Empty;
 
         [Required]
-        [EmailAddress(ErrorMessage = "Invalid Email Address")]
+        [EmailAddress(ErrorMessage = "Invalid {0}")]
         public string Email { get; set; } = string.Empty;
 
         [Required]

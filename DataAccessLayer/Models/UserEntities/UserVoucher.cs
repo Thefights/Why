@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace DataAccessLayer.Models.UserEntities
+﻿namespace DataAccessLayer.Models.UserEntities
 {
     public class UserVoucher
     {
@@ -10,7 +8,6 @@ namespace DataAccessLayer.Models.UserEntities
         public int VoucherId { get; set; }
         public Voucher Voucher { get; set; }
 
-        [Required]
         public bool IsUsed { get; set; }
     }
 }
