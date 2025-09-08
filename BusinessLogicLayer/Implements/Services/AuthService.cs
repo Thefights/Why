@@ -29,7 +29,7 @@ namespace BusinessLogicLayer.Implements.Services
             }
             else if (phoneExist != null)
             {
-                throw new AppException("Phone number already exists.");
+                throw new AppException("Phone already exists.");
             }
 
             var entity = _mapper.Map<User>(dto);
