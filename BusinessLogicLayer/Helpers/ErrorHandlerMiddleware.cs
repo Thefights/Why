@@ -28,6 +28,9 @@ namespace BusinessLogicLayer.Helpers
                         // not found error
                         response.StatusCode = (int)HttpStatusCode.NotFound;
                         break;
+                    case UnauthorizedAccessException e:
+                        response.StatusCode = (int)HttpStatusCode.Unauthorized;
+                        break;
                     default:
                         // unhandled error
                         response.StatusCode = (int)HttpStatusCode.InternalServerError;
