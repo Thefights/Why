@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using BusinessLogicLayer.DTO.UserDTO;
+using BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO;
+using BusinessLogicLayer.DTO.UserDTO.LoginDTO;
 using BusinessLogicLayer.Helpers;
 using BusinessLogicLayer.Utils;
 using DataAccessLayer.Models.UserEntities;
@@ -11,7 +12,7 @@ namespace BusinessLogicLayer.Implements.Services
     public interface IAuthService
     {
         public Task<User> RegisterAsync(AuthUserRequestDTO dto);
-        public Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password);
+        public Task<AuthUserRespondDTO> AuthenticateAsync(LoginDTO dto);
         public Task<AuthUserRespondDTO> RefreshTokenAsync(string refreshToken);
     }
 
@@ -20,16 +21,16 @@ namespace BusinessLogicLayer.Implements.Services
         public async Task<User> RegisterAsync(AuthUserRequestDTO dto)
         {
             // Check if user already exists
-            var emailExist = await GetUserByEmailAsync(dto.Email);
-            var phoneExist = await GetUserByPhone(dto.Phone);
+            var existEmail = await GetUserByEmailAsync(dto.Email);
+            var existPhone = await GetUserByPhone(dto.Phone);
 
-            if (emailExist != null)
+            if (existEmail != null)
             {
                 throw new AppException("Email already exists.");
             }
-            else if (phoneExist != null)
+            else if (existPhone != null)
             {
-                throw new AppException("Phone already exists.");
+                throw new AppException("Phone number already exists.");
             }
 
             var entity = _mapper.Map<User>(dto);
@@ -42,13 +43,17 @@ namespace BusinessLogicLayer.Implements.Services
             return entity;
         }
 
-        public async Task<AuthUserRespondDTO> AuthenticateAsync(string email, string password)
+        public async Task<AuthUserRespondDTO> AuthenticateAsync(LoginDTO dto)
         {
-            var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == email);
+            var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == dto.Email);
 
-            if (user == null || !CryptoUtil.IsPasswordCorrect(password, user.Password))
+            if (user == null)
             {
-                throw new AppException("Email or password is incorrect.");
+                throw new UnauthorizedAccessException("Email is incorrect.");
+            }
+            else if (!CryptoUtil.IsPasswordCorrect(dto.Password, user.Password))
+            {
+                throw new UnauthorizedAccessException("Password is incorrect.");
             }
 
             var jwtToken = _jwtUtils.GenerateJwtToken(user);
