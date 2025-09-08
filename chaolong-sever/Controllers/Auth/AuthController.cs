@@ -1,5 +1,6 @@
 ﻿using BusinessLogicLayer.Attributes;
-using BusinessLogicLayer.DTO.UserDTO;
+using BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO;
+using BusinessLogicLayer.DTO.UserDTO.LoginDTO;
 using BusinessLogicLayer.Implements.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,10 +20,10 @@ namespace chaolong_sever.Controllers.Auth
 
         [AllowAnonymous]
         [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(string email, string password)
+        public async Task<IActionResult> Authenticate(LoginDTO dto)
         {
-            var authResponse = await _authService.AuthenticateAsync(email, password);
-            return Ok(authResponse);
+            var authResponse = await _authService.AuthenticateAsync(dto);
+            return Ok(new { Message = "Authentication successful", Data = authResponse });
         }
 
         [HttpPost("refresh-token")]

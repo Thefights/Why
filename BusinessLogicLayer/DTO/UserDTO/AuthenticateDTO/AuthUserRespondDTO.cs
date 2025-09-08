@@ -1,7 +1,7 @@
 ﻿using BusinessLogicLayer.DTO.Abstract.Base;
 using DataAccessLayer.Models.UserEntities;
 
-namespace BusinessLogicLayer.DTO.UserDTO
+namespace BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO
 {
     public class AuthUserRespondDTO : BaseDTO
     {

@@ -3,7 +3,7 @@ using DataAccessLayer.Enums;
 using System.ComponentModel.DataAnnotations;
 using System.Text.Json.Serialization;
 
-namespace BusinessLogicLayer.DTO.UserDTO
+namespace BusinessLogicLayer.DTO.UserDTO.AuthenticateDTO
 {
     public class AuthUserRequestDTO : BaseDTO
     {
