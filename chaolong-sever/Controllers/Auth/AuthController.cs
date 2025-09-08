@@ -14,7 +14,7 @@ namespace chaolong_sever.Controllers.Auth
         public async Task<IActionResult> Register(AuthUserRequestDTO dto)
         {
             var user = await _authService.RegisterAsync(dto);
-            return Ok(user);
+            return Ok("Registration successful");
         }
 
         [AllowAnonymous]

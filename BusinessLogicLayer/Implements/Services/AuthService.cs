@@ -20,11 +20,16 @@ namespace BusinessLogicLayer.Implements.Services
         public async Task<User> RegisterAsync(AuthUserRequestDTO dto)
         {
             // Check if user already exists
-            var existingUser = await GetUserByEmailAsync(dto.Email);
+            var emailExist = await GetUserByEmailAsync(dto.Email);
+            var phoneExist = await GetUserByPhone(dto.Phone);
 
-            if (existingUser != null)
+            if (emailExist != null)
             {
-                throw new AppException("User already exists.");
+                throw new AppException("Email already exists.");
+            }
+            else if (phoneExist != null)
+            {
+                throw new AppException("Phone already exists.");
             }
 
             var entity = _mapper.Map<User>(dto);
@@ -76,6 +81,12 @@ namespace BusinessLogicLayer.Implements.Services
         {
             var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Email == email);
 
+            return user;
+        }
+
+        private async Task<User> GetUserByPhone(string phone)
+        {
+            var user = await _unitOfWork.Repository<User>().GetByCondition(u => u.Phone == phone);
             return user;
         }
 
